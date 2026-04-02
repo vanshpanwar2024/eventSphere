@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -31,10 +32,12 @@ export default function RootLayout({
       className={`${cormorant.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[#070707] text-[#dcdcdc]">
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
