@@ -2,18 +2,32 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
+import { signIn } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
   const [isLoginView, setIsLoginView] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(); // Call mock login
-    router.push("/"); // Redirect to home
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    
+    if (res?.ok) {
+      router.push("/");
+    } else {
+      alert("Authentication failed. Please check your credentials.");
+    }
+  };
+
+  const handleGoogleSignIn = () => {
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -55,6 +69,8 @@ export default function LoginPage() {
               <input
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="hello@example.com"
                 className="w-full bg-transparent border-b border-white/20 pb-2 text-sm text-[#dcdcdc] font-light placeholder:text-[#333] focus:outline-none focus:border-[#b49b5c] transition-colors"
               />
@@ -67,6 +83,8 @@ export default function LoginPage() {
               <input
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full bg-transparent border-b border-white/20 pb-2 text-sm text-[#dcdcdc] font-light placeholder:text-[#333] focus:outline-none focus:border-[#b49b5c] transition-colors"
               />
@@ -74,9 +92,27 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full mt-8 border border-[#b49b5c] bg-[#b49b5c]/5 text-[#b49b5c] hover:bg-[#b49b5c] hover:text-[#070707] py-3 mt-4 text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300"
+              className="w-full border border-[#b49b5c] bg-[#b49b5c]/5 text-[#b49b5c] hover:bg-[#b49b5c] hover:text-[#070707] py-3 mt-4 text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300"
             >
               {isLoginView ? "Sign In" : "Sign Up"}
+            </button>
+
+            <div className="relative flex items-center justify-center my-6">
+              <div className="w-full h-[1px] bg-white/10"></div>
+              <span className="absolute bg-[#0a0a0a] px-3 text-[10px] tracking-widest text-[#6b6b6b] uppercase">
+                OR
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="w-full border border-white/20 bg-transparent text-[#dcdcdc] hover:bg-white/5 py-3 text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 flex items-center justify-center space-x-3"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/>
+              </svg>
+              <span>Continue with Google</span>
             </button>
           </form>
 
