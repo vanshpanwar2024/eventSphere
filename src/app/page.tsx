@@ -65,13 +65,6 @@ export default function HomePage() {
           <div className="w-12 h-[1px] bg-[#b49b5c]/50"></div>
         </div>
 
-        {/* Big Background Text */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none">
-          <h2 className="text-[12vw] leading-none font-serif tracking-widest text-white/[0.03] whitespace-nowrap">
-            EVENT SPHERE
-          </h2>
-        </div>
-
         <div className="z-10 max-w-4xl mx-auto space-y-6">
           {/* Main Statement */}
           <h3 className="text-4xl md:text-6xl font-serif text-white leading-tight">

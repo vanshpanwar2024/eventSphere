@@ -2,16 +2,29 @@
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="absolute top-0 w-full z-50 bg-transparent text-white py-6 px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center relative">
-        <Link href="/" className="text-2xl font-serif font-bold tracking-widest uppercase">
+        <Link href="/" className="text-4xl font-serif font-bold tracking-widest uppercase bg-transparent">
           Event Sphere
         </Link>
         <div className="space-x-12 font-sans text-xs tracking-[0.2em] uppercase text-[#dcdcdc]/80 hidden md:flex items-center">
@@ -30,7 +43,7 @@ export default function Navbar() {
           
           {/* Mock Auth Avatar / Login Button */}
           {session?.user ? (
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="w-8 h-8 rounded-full bg-[#b49b5c] font-serif text-[#070707] font-bold text-lg flex items-center justify-center border-2 border-transparent hover:border-[#dcdcdc] transition-all"

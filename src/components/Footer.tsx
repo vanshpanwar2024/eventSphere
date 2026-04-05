@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
         {/* Brand */}
         <div className="flex flex-col items-start md:col-span-1">
-          <Link href="/" className="text-3xl font-serif text-[#dcdcdc] tracking-widest uppercase mb-4">
+          <Link href="/" className="text-4xl font-serif text-[#dcdcdc] tracking-widest uppercase mb-4 bg-transparent">
             Event Sphere
           </Link>
           <p className="text-sm font-light leading-relaxed max-w-xs text-[#6b6b6b]">
