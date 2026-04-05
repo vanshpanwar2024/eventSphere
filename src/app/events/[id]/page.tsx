@@ -1,15 +1,42 @@
 import Navbar from "@/components/Navbar";
 import { eventsData } from "@/lib/data";
+import { mapHostedRecordToDisplayEvent, type DisplayEvent } from "@/lib/hosted-event-display";
+import { EventRepository } from "@/backend/repositories/EventRepository";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const eventRepository = new EventRepository();
+
+export const dynamic = "force-dynamic";
 
 // Required for Next.js app router dynamic params
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const event = eventsData.find((e) => e.id.toString() === resolvedParams.id);
+  const idStr = resolvedParams.id;
+  const numericId = Number(idStr);
 
-  if (!event) {
+  const staticEvent = eventsData.find((e) => e.id.toString() === idStr);
+
+  let event: DisplayEvent | (typeof eventsData)[number];
+
+  if (staticEvent) {
+    event = staticEvent;
+  } else if (!Number.isFinite(numericId)) {
     return notFound();
+  } else {
+    const hosted = await eventRepository.findById(numericId);
+    if (!hosted) {
+      return notFound();
+    }
+    event = mapHostedRecordToDisplayEvent({
+      id: hosted.id,
+      title: hosted.title,
+      description: hosted.description,
+      dateTime: hosted.dateTime,
+      location: hosted.location,
+      category: hosted.category,
+      maxParticipants: hosted.maxParticipants,
+    });
   }
 
   return (
