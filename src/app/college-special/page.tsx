@@ -1,8 +1,62 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { collegeEventsData as collegeEvents } from "@/lib/data";
 
 export default function CollegeSpecialPage() {
+  const [showVerificationForm, setShowVerificationForm] = useState(false);
+  const [enrollmentId, setEnrollmentId] = useState("");
+  const [collegeEmail, setCollegeEmail] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [expectedOtp, setExpectedOtp] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isOtpSent) {
+      if (enrollmentId && collegeEmail) {
+        setIsLoading(true);
+        try {
+          const res = await fetch("/api/send-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: collegeEmail }),
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            setIsOtpSent(true);
+            setExpectedOtp(data.otp);
+          } else {
+            alert("Failed to send OTP: " + (data.error || "Please check your SMTP provider settings."));
+          }
+        } catch (error) {
+          console.error("Error sending OTP request:", error);
+          alert("Error sending OTP request.");
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    } else {
+      if (otp.length > 0) {
+        if (otp === expectedOtp) {
+          // Verification success
+          setIsVerified(true);
+          setShowVerificationForm(false);
+          setIsOtpSent(false); // reset state for next time if needed
+        } else {
+          alert("Invalid OTP. Please try again.");
+        }
+      } else {
+        alert("Please enter the OTP sent to your email.");
+      }
+    }
+  };
+
   return (
     <main className="relative min-h-screen bg-[#070707] text-[#dcdcdc] font-sans pb-32">
       <Navbar />
@@ -35,15 +89,110 @@ export default function CollegeSpecialPage() {
 
       {/* Verified Student Banner (Aesthetic Touch) */}
       <section className="max-w-7xl mx-auto px-6 mb-20">
-        <div className="flex flex-col md:flex-row items-center justify-between bg-[#b49b5c]/5 border border-[#b49b5c]/20 rounded-sm p-8">
-          <div className="mb-6 md:mb-0 space-y-2 text-center md:text-left">
-            <h3 className="font-serif text-2xl text-white">Verify Your Student ID</h3>
-            <p className="text-[#8a8a8a] text-sm">Unlock up to 40% exclusive student discounts across all premium events.</p>
+        <div className="flex flex-col md:flex-row items-center justify-between bg-[#b49b5c]/5 border border-[#b49b5c]/20 rounded-sm p-8 transition-all duration-500">
+          <div className="mb-6 md:mb-0 space-y-2 text-center md:text-left flex-1">
+            <h3 className="font-serif text-2xl text-white">
+              {isVerified ? "Student Status Verified" : "Verify Your Student ID"}
+            </h3>
+            <p className="text-[#8a8a8a] text-sm">
+              {isVerified 
+                ? "Your exclusive student discounts have been unlocked. Enjoy the premium events."
+                : "Unlock up to 40% exclusive student discounts across all premium events."}
+            </p>
           </div>
-          <button className="border border-[#b49b5c] text-[#070707] bg-[#b49b5c] px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-transparent hover:text-[#b49b5c] transition-all duration-300">
-            Verify Now
-          </button>
+          
+          {!isVerified && !showVerificationForm && (
+            <button 
+              onClick={() => setShowVerificationForm(true)}
+              className="border border-[#b49b5c] text-[#070707] bg-[#b49b5c] px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-transparent hover:text-[#b49b5c] transition-all duration-300"
+            >
+              Verify Now
+            </button>
+          )}
+
+          {isVerified && (
+            <div className="border border-[#b49b5c]/50 text-[#b49b5c] bg-transparent px-8 py-3 uppercase tracking-widest text-xs font-bold flex items-center space-x-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Verified</span>
+            </div>
+          )}
         </div>
+
+        {/* Verification Form Dropdown */}
+        {showVerificationForm && (
+          <div className="mt-4 bg-[#0a0a0a] border border-[#b49b5c]/20 p-8 rounded-sm animate-in fade-in slide-in-from-top-4 duration-500">
+            <form onSubmit={handleFormSubmit} className="max-w-md mx-auto space-y-6">
+              <div>
+                <label className="block text-xs uppercase tracking-[0.2em] text-[#6b6b6b] mb-2">
+                  College Enrollment ID
+                </label>
+                <input
+                  type="text"
+                  required
+                  disabled={isOtpSent}
+                  value={enrollmentId}
+                  onChange={(e) => setEnrollmentId(e.target.value)}
+                  placeholder="e.g. 2021CSB1042"
+                  className="w-full bg-transparent border-b border-white/20 pb-2 text-sm text-[#dcdcdc] font-light placeholder:text-[#333] focus:outline-none focus:border-[#b49b5c] transition-colors disabled:opacity-50"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-xs uppercase tracking-[0.2em] text-[#6b6b6b] mb-2">
+                  College Email ID
+                </label>
+                <input
+                  type="email"
+                  required
+                  disabled={isOtpSent}
+                  value={collegeEmail}
+                  onChange={(e) => setCollegeEmail(e.target.value)}
+                  placeholder="student@college.edu.in"
+                  className="w-full bg-transparent border-b border-white/20 pb-2 text-sm text-[#dcdcdc] font-light placeholder:text-[#333] focus:outline-none focus:border-[#b49b5c] transition-colors disabled:opacity-50"
+                />
+              </div>
+
+              {isOtpSent && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                  <label className="block text-xs uppercase tracking-[0.2em] text-[#b49b5c] mb-2">
+                    Enter OTP sent to {collegeEmail}
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter 6-digit OTP"
+                    className="w-full bg-transparent border-b border-[#b49b5c]/50 pb-2 text-sm text-white font-medium placeholder:text-[#333] focus:outline-none focus:border-[#b49b5c] transition-colors"
+                  />
+                </div>
+              )}
+
+              <div className="flex space-x-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowVerificationForm(false);
+                    setIsOtpSent(false);
+                    setOtp("");
+                  }}
+                  className="flex-1 border border-white/20 bg-transparent text-[#dcdcdc] hover:bg-white/5 py-3 text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex-1 border border-[#b49b5c] bg-[#b49b5c]/5 text-[#b49b5c] hover:bg-[#b49b5c] hover:text-[#070707] py-3 text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 disabled:opacity-50"
+                >
+                  {isLoading ? "Sending..." : (isOtpSent ? "Verify OTP" : "Send OTP")}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </section>
 
       {/* College Events Grid */}
