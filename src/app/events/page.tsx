@@ -1,15 +1,40 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { eventsData as events } from "@/lib/data";
+import type { DisplayEvent } from "@/lib/hosted-event-display";
 
 const FILTERS = ["All", "Tech", "Music", "Food", "Fashion"];
 
 export default function EventsPage() {
+  const [events, setEvents] = useState<DisplayEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
   const [activeFilter, setActiveFilter] = useState("All");
+
+  useEffect(() => {
+    let cancelled = false;
+    setFetchError(null);
+    fetch("/api/events", { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load events");
+        return res.json();
+      })
+      .then((data: DisplayEvent[]) => {
+        if (!cancelled) setEvents(data);
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setFetchError(e.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const loadMore = () => {
     setVisibleCount((prev) => prev + 3);
@@ -71,8 +96,19 @@ export default function EventsPage() {
 
       {/* Events Grid Section */}
       <section className="relative w-full max-w-7xl mx-auto px-6 py-12">
+        {fetchError && (
+          <div className="mb-8 p-4 border border-red-500/50 bg-red-500/10 text-red-200 text-sm text-center">
+            {fetchError}
+          </div>
+        )}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center text-center text-[#8a8a8a] py-24 space-y-4">
+            <span className="text-4xl animate-pulse">✦</span>
+            <p className="text-lg font-serif">Loading events…</p>
+          </div>
+        ) : null}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 min-h-[40vh]">
-          {eventsToDisplay.length > 0 ? (
+          {!loading && eventsToDisplay.length > 0 ? (
             eventsToDisplay.map((event) => (
               <Link href={`/events/${event.id}`} key={event.id}>
                 <div 
@@ -112,12 +148,12 @@ export default function EventsPage() {
                 </div>
               </Link>
             ))
-          ) : (
+          ) : !loading ? (
             <div className="col-span-full flex flex-col items-center justify-center text-center text-[#8a8a8a] py-24 space-y-4">
               <span className="text-4xl">📭</span>
               <p className="text-lg font-serif">No events found for this category yet.</p>
             </div>
-          )}
+          ) : null}
         </div>
         
         {/* Load More Button */}
