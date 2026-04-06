@@ -6,9 +6,9 @@ import { useState, useRef, Suspense } from "react";
 import * as random from "maath/random/dist/maath-random.esm";
 
 function StarField(props: any) {
-  const ref = useRef<any>();
+  const ref = useRef<any>(null);
   const [sphere] = useState(() => {
-    const data = new Float32Array(5000);
+    const data = new Float32Array(5001);
     return random.inSphere(data, { radius: 1.5 }) as Float32Array;
   });
 
