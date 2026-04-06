@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import StudentVerificationModal from "@/components/ui/StudentVerificationModal";
-import { motion } from "framer-motion";
+import DigitalPassModal from "@/components/ui/DigitalPassModal";
+import PaymentGatewayModal from "@/components/ui/PaymentGatewayModal";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface BookingSectionProps {
   event: any;
@@ -11,6 +13,19 @@ interface BookingSectionProps {
 export default function BookingSection({ event }: BookingSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  const [isPurchased, setIsPurchased] = useState(false);
+  const [isPassOpen, setIsPassOpen] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+  const handlePurchase = () => {
+    setIsPaymentModalOpen(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    setIsPurchased(true);
+    setIsPassOpen(true);
+  };
 
   return (
     <div className="bg-[#0a0a0a] border border-white/10 p-8 flex flex-col h-fit sticky top-32 group overflow-hidden">
@@ -60,9 +75,24 @@ export default function BookingSection({ event }: BookingSectionProps) {
           </div>
         )}
         
-        <button className="w-full bg-[#b49b5c] text-[#070707] py-4 uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-white hover:text-[#070707] transition-all duration-500 shadow-[0_5px_30px_rgba(180,155,92,0.15)]">
-          {isVerified ? "Purchase VIP Pass" : "Purchase Pass"}
-        </button>
+        {!isPurchased ? (
+          <button 
+            disabled={isPurchasing}
+            onClick={handlePurchase}
+            className="w-full bg-[#b49b5c] text-[#070707] py-4 uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-white hover:text-[#070707] transition-all duration-500 shadow-[0_5px_30px_rgba(180,155,92,0.15)] disabled:opacity-50"
+          >
+            {isPurchasing ? "Securing Reservation..." : isVerified ? "Purchase VIP Pass" : "Purchase Pass"}
+          </button>
+        ) : (
+          <motion.button 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            onClick={() => setIsPassOpen(true)}
+            className="w-full bg-transparent border-2 border-[#b49b5c] text-white py-4 uppercase tracking-[0.2em] text-[10px] font-bold flex items-center justify-center gap-2 group hover:bg-[#b49b5c]/10 transition-all duration-300 shadow-[0_0_20px_rgba(180,155,92,0.1)]"
+          >
+            <span className="text-[#b49b5c] animate-pulse">✦</span> Get Digital Pass
+          </motion.button>
+        )}
       </div>
 
       <StudentVerificationModal 
@@ -70,6 +100,27 @@ export default function BookingSection({ event }: BookingSectionProps) {
         onClose={() => setIsModalOpen(false)}
         onSuccess={() => setIsVerified(true)}
         eventTitle={event.title}
+      />
+
+      <DigitalPassModal 
+        isOpen={isPassOpen}
+        onClose={() => setIsPassOpen(false)}
+        event={{
+          title: event.title,
+          date: event.date,
+          location: event.location,
+          price: isVerified ? "Elite Pricing" : event.price
+        }}
+      />
+
+      <PaymentGatewayModal 
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        onSuccess={handlePaymentSuccess}
+        event={{
+          title: event.title,
+          price: isVerified ? "Elite Discount" : event.price
+        }}
       />
     </div>
   );
