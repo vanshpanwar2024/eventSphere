@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import { collegeEventsData } from "@/lib/data";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CollegeBookingSection from "@/components/CollegeBookingSection";
 
 export default async function CollegeEventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -61,33 +62,8 @@ export default async function CollegeEventDetailsPage({ params }: { params: Prom
           </div>
         </div>
         
-        {/* Booking Card */}
-        <div className="bg-[#b49b5c]/5 border border-[#b49b5c]/20 p-8 flex flex-col h-fit sticky top-32">
-          <div className="bg-[#b49b5c] text-[#070707] text-[10px] uppercase tracking-widest font-bold py-1 px-3 w-fit mb-4">
-            Student Exclusive
-          </div>
-          <h3 className="text-2xl font-serif text-white mb-2">Claim Your Pass</h3>
-          <p className="text-xs text-[#8a8a8a] uppercase tracking-widest mb-8">Valid College ID Required at Gate</p>
-          
-          <div className="space-y-4 mb-8">
-            <div className="flex justify-between items-center border-b border-white/5 pb-4">
-              <span className="text-sm text-[#8a8a8a]">Date</span>
-              <span className="text-[#dcdcdc] text-sm text-right">{event.date}</span>
-            </div>
-            <div className="flex justify-between items-center border-b border-white/5 pb-4">
-              <span className="text-sm text-[#8a8a8a]">Time</span>
-              <span className="text-[#dcdcdc] text-sm text-right">{event.time}</span>
-            </div>
-            <div className="flex justify-between items-center border-b border-white/5 pb-4">
-              <span className="text-sm text-[#8a8a8a]">Student Pass</span>
-              <span className="text-2xl font-serif text-[#b49b5c]">{event.price}</span>
-            </div>
-          </div>
-          
-          <button className="w-full bg-[#b49b5c] text-[#070707] py-4 uppercase tracking-widest text-xs font-bold hover:bg-transparent hover:text-[#b49b5c] hover:border hover:border-[#b49b5c] transition-all duration-300">
-            Verify & Checkout
-          </button>
-        </div>
+        {/* Booking Card Section (Client Component) */}
+        <CollegeBookingSection event={event} />
       </section>
     </main>
   );
