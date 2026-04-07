@@ -5,6 +5,8 @@ export class EventModel {
   private location: string;
   private category: string;
   private maxParticipants: number;
+  private isPaid: boolean;
+  private ticketPrice?: number;
 
   constructor(data: {
     title: string;
@@ -13,6 +15,8 @@ export class EventModel {
     location: string;
     category: string;
     maxParticipants: number;
+    isPaid?: boolean;
+    ticketPrice?: number;
   }) {
     this.title = data.title;
     this.description = data.description;
@@ -20,6 +24,12 @@ export class EventModel {
     this.location = data.location;
     this.category = data.category;
     this.maxParticipants = Number(data.maxParticipants);
+    this.isPaid = Boolean(data.isPaid);
+    if (this.isPaid) {
+      this.ticketPrice = data.ticketPrice ? Number(data.ticketPrice) : 0;
+    } else {
+      this.ticketPrice = undefined;
+    }
   }
 
   // Getters
@@ -29,6 +39,8 @@ export class EventModel {
   public getLocation(): string { return this.location; }
   public getCategory(): string { return this.category; }
   public getMaxParticipants(): number { return this.maxParticipants; }
+  public getIsPaid(): boolean { return this.isPaid; }
+  public getTicketPrice(): number | undefined { return this.ticketPrice; }
 
   // Validation
   public validate(): string[] {
@@ -40,6 +52,12 @@ export class EventModel {
     if (!this.location || this.location.trim().length === 0) errors.push("Location is required.");
     if (!this.category || this.category.trim().length === 0) errors.push("Category is required.");
     if (!this.maxParticipants || isNaN(this.maxParticipants) || this.maxParticipants <= 0) errors.push("Max participants must be a positive number.");
+
+    if (this.isPaid) {
+      if (this.ticketPrice === undefined || isNaN(this.ticketPrice) || this.ticketPrice < 0) {
+        errors.push("A valid non-negative ticket price is required for paid events.");
+      }
+    }
 
     return errors;
   }
@@ -53,6 +71,8 @@ export class EventModel {
       location: this.location,
       category: this.category,
       maxParticipants: this.maxParticipants,
+      isPaid: this.isPaid,
+      ticketPrice: this.ticketPrice,
     };
   }
 }

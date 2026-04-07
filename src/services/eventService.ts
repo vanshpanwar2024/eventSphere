@@ -5,6 +5,8 @@ export interface CreateEventPayload {
   location: string;
   category: string;
   maxParticipants: number;
+  isPaid: boolean;
+  ticketPrice?: number;
 }
 
 export const frontendEventService = {
