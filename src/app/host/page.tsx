@@ -3,6 +3,8 @@
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
 import { frontendEventService, CreateEventPayload } from "@/services/eventService";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function HostEventPage() {
   const [formData, setFormData] = useState<CreateEventPayload>({
@@ -112,15 +114,21 @@ export default function HostEventPage() {
                 </div>
 
                 {/* Date & Time */}
-                <div className="space-y-2">
+                <div className="space-y-2 flex flex-col">
                   <label htmlFor="dateTime" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">Date & Time *</label>
-                  <input
+                  <DatePicker
                     id="dateTime"
-                    name="dateTime"
-                    type="datetime-local"
-                    required
-                    value={formData.dateTime}
-                    onChange={handleChange}
+                    selected={formData.dateTime ? new Date(formData.dateTime) : null}
+                    onChange={(date: Date | null) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        dateTime: date ? date.toISOString() : ""
+                      }));
+                    }}
+                    showTimeSelect
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    placeholderText="Select date and time"
+                    shouldCloseOnSelect={false}
                     className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-[#b49b5c] transition-colors"
                   />
                 </div>

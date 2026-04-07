@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Final Test",
+    "description": "Final testing of the event creation flow.",
+    "dateTime": "2026-04-10T06:30:00.000Z",
+    "location": "Mumbai",
+    "category": "Tech",
+    "maxParticipants": 100,
+    "id": 1775474129929
+  },
+  {
+    "title": "haaan",
+    "description": "yeah broo lets goo brooo",
+    "dateTime": "2026-04-23T09:30:00.000Z",
+    "location": "kasol",
+    "category": "Fashion",
+    "maxParticipants": 9654,
+    "id": 1775555176083
+  }
+]
