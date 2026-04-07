@@ -36,6 +36,8 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       location: hosted.location,
       category: hosted.category,
       maxParticipants: hosted.maxParticipants,
+      isPaid: hosted.isPaid,
+      ticketPrice: hosted.ticketPrice,
     });
   }
 

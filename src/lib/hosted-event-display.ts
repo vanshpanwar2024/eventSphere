@@ -34,6 +34,8 @@ export function mapHostedRecordToDisplayEvent(record: {
   location: string;
   category: string;
   maxParticipants: number;
+  isPaid?: boolean;
+  ticketPrice?: number;
 }): DisplayEvent {
   const dateObj = new Date(record.dateTime);
   const date = dateObj.toLocaleDateString("en-IN", {
@@ -51,7 +53,7 @@ export function mapHostedRecordToDisplayEvent(record: {
     category: record.category,
     date,
     location: record.location,
-    price: "Hosted",
+    price: record.isPaid && record.ticketPrice !== undefined ? `₹${record.ticketPrice.toLocaleString("en-IN")}` : "Free",
     image: CATEGORY_IMAGES[record.category] ?? DEFAULT_IMAGE,
     description: record.description,
     organizer: "Event Sphere Host",

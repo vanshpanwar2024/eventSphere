@@ -12,6 +12,8 @@ export default function HostEventPage() {
     location: "",
     category: "",
     maxParticipants: 0,
+    isPaid: false,
+    ticketPrice: 0,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +21,12 @@ export default function HostEventPage() {
   const [success, setSuccess] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "maxParticipants" ? Number(value) : value,
+      [name]: type === "checkbox" ? checked : (name === "maxParticipants" || name === "ticketPrice" ? Number(value) : value),
     }));
   };
 
@@ -43,6 +47,8 @@ export default function HostEventPage() {
         location: "",
         category: "",
         maxParticipants: 0,
+        isPaid: false,
+        ticketPrice: 0,
       });
     } catch (err: any) {
       setError(err.message || "Something went wrong while creating the event.");
@@ -176,6 +182,48 @@ export default function HostEventPage() {
                     className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-[#b49b5c] transition-colors"
                     placeholder="e.g. 500"
                   />
+                </div>
+
+                {/* Pricing Type Toggle */}
+                <div className="space-y-4 md:col-span-2 border border-white/10 p-6 bg-[#0c0c0c]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold block mb-1">Pricing Model *</label>
+                      <p className="text-[#8a8a8a] text-sm">Will this event require attendees to purchase a ticket?</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="isPaid"
+                        checked={formData.isPaid}
+                        onChange={handleChange}
+                        className="sr-only peer"
+                      />
+                      <div className="w-14 h-7 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[#b49b5c]"></div>
+                      <span className="ml-3 text-sm font-medium text-white uppercase tracking-wider">{formData.isPaid ? 'Paid' : 'Free'}</span>
+                    </label>
+                  </div>
+
+                  {formData.isPaid && (
+                    <div className="pt-4 mt-4 border-t border-white/5 animate-in fade-in slide-in-from-top-2">
+                      <label htmlFor="ticketPrice" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">Ticket Price (₹) *</label>
+                      <div className="relative mt-2">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-[#b49b5c] font-serif text-lg">₹</span>
+                        <input
+                          id="ticketPrice"
+                          name="ticketPrice"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          required={formData.isPaid}
+                          value={formData.ticketPrice || ""}
+                          onChange={handleChange}
+                          className="w-full bg-[#0a0a0a] border border-white/20 py-3 pl-8 text-white focus:outline-none focus:border-[#b49b5c] transition-colors"
+                          placeholder="0.00"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Description */}

@@ -16,6 +16,8 @@ export async function GET() {
       location: row.location,
       category: row.category,
       maxParticipants: row.maxParticipants,
+      isPaid: row.isPaid,
+      ticketPrice: row.ticketPrice,
     })
   );
   const merged = [...hostedDisplay, ...eventsData];
