@@ -7,6 +7,7 @@ export class EventModel {
   private maxParticipants: number;
   private isPaid: boolean;
   private ticketPrice?: number;
+  private isCollegeSpecial: boolean;
 
   constructor(data: {
     title: string;
@@ -17,6 +18,7 @@ export class EventModel {
     maxParticipants: number;
     isPaid?: boolean;
     ticketPrice?: number;
+    isCollegeSpecial?: boolean;
   }) {
     this.title = data.title;
     this.description = data.description;
@@ -25,6 +27,7 @@ export class EventModel {
     this.category = data.category;
     this.maxParticipants = Number(data.maxParticipants);
     this.isPaid = Boolean(data.isPaid);
+    this.isCollegeSpecial = Boolean(data.isCollegeSpecial);
     if (this.isPaid) {
       this.ticketPrice = data.ticketPrice ? Number(data.ticketPrice) : 0;
     } else {
@@ -41,6 +44,7 @@ export class EventModel {
   public getMaxParticipants(): number { return this.maxParticipants; }
   public getIsPaid(): boolean { return this.isPaid; }
   public getTicketPrice(): number | undefined { return this.ticketPrice; }
+  public getIsCollegeSpecial(): boolean { return this.isCollegeSpecial; }
 
   // Validation
   public validate(): string[] {
@@ -73,6 +77,7 @@ export class EventModel {
       maxParticipants: this.maxParticipants,
       isPaid: this.isPaid,
       ticketPrice: this.ticketPrice,
+      isCollegeSpecial: this.isCollegeSpecial,
     };
   }
 }

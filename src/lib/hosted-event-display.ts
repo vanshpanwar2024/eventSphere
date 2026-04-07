@@ -11,6 +11,7 @@ export interface DisplayEvent {
   description: string;
   organizer: string;
   time: string;
+  isCollegeSpecial?: boolean;
 }
 
 const CATEGORY_IMAGES: Record<string, string> = {
@@ -21,6 +22,12 @@ const CATEGORY_IMAGES: Record<string, string> = {
   Business: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
   Design: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
   "Health & Wellness": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80",
+  // College Specific
+  "Cultural Fest": "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&q=80",
+  "Technical Fest": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&q=80",
+  "Management Fest": "https://images.unsplash.com/photo-1523908511403-7fc7b25592f4?w=800&q=80",
+  "Design & Arts": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80",
+  "Sports & Athletics": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
 };
 
 const DEFAULT_IMAGE =
@@ -36,6 +43,7 @@ export function mapHostedRecordToDisplayEvent(record: {
   maxParticipants: number;
   isPaid?: boolean;
   ticketPrice?: number;
+  isCollegeSpecial?: boolean;
 }): DisplayEvent {
   const dateObj = new Date(record.dateTime);
   const date = dateObj.toLocaleDateString("en-IN", {
@@ -58,5 +66,6 @@ export function mapHostedRecordToDisplayEvent(record: {
     description: record.description,
     organizer: "Event Sphere Host",
     time,
+    isCollegeSpecial: record.isCollegeSpecial,
   };
 }

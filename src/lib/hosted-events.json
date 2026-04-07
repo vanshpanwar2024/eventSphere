@@ -27,5 +27,29 @@
     "isPaid": true,
     "ticketPrice": 99,
     "id": 1775570265659
+  },
+  {
+    "title": "chadsaa",
+    "description": "iohewiuhiufrwihwiuwe",
+    "dateTime": "2026-04-07T14:30:00.390Z",
+    "location": "model town",
+    "category": "Design",
+    "maxParticipants": 22,
+    "isPaid": true,
+    "ticketPrice": 99,
+    "isCollegeSpecial": false,
+    "id": 1775571123054
+  },
+  {
+    "title": "rishihood university",
+    "description": "networnnnnn",
+    "dateTime": "2026-04-13T15:30:00.000Z",
+    "location": "newtron",
+    "category": "Cultural Fest",
+    "maxParticipants": 339,
+    "isPaid": true,
+    "ticketPrice": 69,
+    "isCollegeSpecial": true,
+    "id": 1775571210421
   }
 ]

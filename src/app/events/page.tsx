@@ -62,6 +62,7 @@ export default function EventsPage() {
   };
 
   const filteredEvents = events.filter((event) => {
+    if (event.isCollegeSpecial) return false;
     if (activeFilter === "All") return true;
     return event.category === activeFilter;
   });

@@ -18,6 +18,7 @@ export async function GET() {
       maxParticipants: row.maxParticipants,
       isPaid: row.isPaid,
       ticketPrice: row.ticketPrice,
+      isCollegeSpecial: row.isCollegeSpecial,
     })
   );
   const merged = [...hostedDisplay, ...eventsData];

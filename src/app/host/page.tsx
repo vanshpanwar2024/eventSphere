@@ -16,6 +16,7 @@ export default function HostEventPage() {
     maxParticipants: 0,
     isPaid: false,
     ticketPrice: 0,
+    isCollegeSpecial: false,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +52,7 @@ export default function HostEventPage() {
         maxParticipants: 0,
         isPaid: false,
         ticketPrice: 0,
+        isCollegeSpecial: false,
       });
     } catch (err: any) {
       setError(err.message || "Something went wrong while creating the event.");
@@ -139,9 +141,50 @@ export default function HostEventPage() {
                   />
                 </div>
 
-                {/* Location */}
+                {/* Event Classification */}
+                <div className="space-y-4 md:col-span-2 border border-white/5 p-6 bg-[#0c0c0c]/50">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="uppercase tracking-widest text-xs text-[#b49b5c] font-bold block mb-1">Event Classification *</label>
+                      <p className="text-[#8a8a8a] text-sm font-light">Is this a general event or a student-exclusive college special?</p>
+                    </div>
+                    <div className="flex items-center space-x-6">
+                       <label className="flex items-center cursor-pointer group">
+                         <input
+                           type="radio"
+                           name="isCollegeSpecial"
+                           checked={!formData.isCollegeSpecial}
+                           onChange={() => setFormData(prev => ({ ...prev, isCollegeSpecial: false }))}
+                           className="sr-only"
+                         />
+                         <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${!formData.isCollegeSpecial ? 'border-[#b49b5c] bg-[#b49b5c]/10' : 'border-white/20'}`}>
+                           {!formData.isCollegeSpecial && <div className="w-1.5 h-1.5 rounded-full bg-[#b49b5c]"></div>}
+                         </div>
+                         <span className={`ml-2 text-xs uppercase tracking-widest ${!formData.isCollegeSpecial ? 'text-white' : 'text-[#666] group-hover:text-[#8a8a8a]'}`}>Standard</span>
+                       </label>
+                       
+                       <label className="flex items-center cursor-pointer group">
+                         <input
+                           type="radio"
+                           name="isCollegeSpecial"
+                           checked={formData.isCollegeSpecial}
+                           onChange={() => setFormData(prev => ({ ...prev, isCollegeSpecial: true }))}
+                           className="sr-only"
+                         />
+                         <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${formData.isCollegeSpecial ? 'border-[#b49b5c] bg-[#b49b5c]/10' : 'border-white/20'}`}>
+                           {formData.isCollegeSpecial && <div className="w-1.5 h-1.5 rounded-full bg-[#b49b5c]"></div>}
+                         </div>
+                         <span className={`ml-2 text-xs uppercase tracking-widest ${formData.isCollegeSpecial ? 'text-white' : 'text-[#666] group-hover:text-[#8a8a8a]'}`}>College Special</span>
+                       </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location / University */}
                 <div className="space-y-2">
-                  <label htmlFor="location" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">Location *</label>
+                  <label htmlFor="location" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">
+                    {formData.isCollegeSpecial ? "University / College Name *" : "Location *"}
+                  </label>
                   <input
                     id="location"
                     name="location"
@@ -150,13 +193,15 @@ export default function HostEventPage() {
                     value={formData.location}
                     onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-[#b49b5c] transition-colors"
-                    placeholder="Grand Auditorium, Mumbai"
+                    placeholder={formData.isCollegeSpecial ? "Indian Institute of Technology, Bombay" : "Grand Auditorium, Mumbai"}
                   />
                 </div>
 
-                {/* Category */}
+                {/* Category / Type */}
                 <div className="space-y-2">
-                  <label htmlFor="category" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">Category *</label>
+                  <label htmlFor="category" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">
+                    {formData.isCollegeSpecial ? "Fest Type *" : "Category *"}
+                  </label>
                   <select
                     id="category"
                     name="category"
@@ -165,14 +210,27 @@ export default function HostEventPage() {
                     onChange={handleChange}
                     className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-[#b49b5c] transition-colors [&>option]:bg-[#0a0a0a]"
                   >
-                    <option value="" disabled>Select a category</option>
-                    <option value="Tech">Tech</option>
-                    <option value="Music">Music</option>
-                    <option value="Food">Food</option>
-                    <option value="Fashion">Fashion</option>
-                    <option value="Business">Business</option>
-                    <option value="Design">Design</option>
-                    <option value="Health & Wellness">Health & Wellness</option>
+                    <option value="" disabled>Select a {formData.isCollegeSpecial ? "fest type" : "category"}</option>
+                    {formData.isCollegeSpecial ? (
+                      <>
+                        <option value="Cultural Fest">Cultural Fest</option>
+                        <option value="Technical Fest">Technical Fest</option>
+                        <option value="Management Fest">Management Fest</option>
+                        <option value="Design & Arts">Design & Arts</option>
+                        <option value="Research Symposium">Research Symposium</option>
+                        <option value="Sports & Athletics">Sports & Athletics</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="Tech">Tech</option>
+                        <option value="Music">Music</option>
+                        <option value="Food">Food</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Business">Business</option>
+                        <option value="Design">Design</option>
+                        <option value="Health & Wellness">Health & Wellness</option>
+                      </>
+                    )}
                   </select>
                 </div>
 

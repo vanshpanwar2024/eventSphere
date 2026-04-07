@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
-import { collegeEventsData as collegeEvents } from "@/lib/data";
+import { collegeEventsData as staticCollegeEvents } from "@/lib/data";
+import type { DisplayEvent } from "@/lib/hosted-event-display";
 
 export default function CollegeSpecialPage() {
   const [showVerificationForm, setShowVerificationForm] = useState(false);
@@ -14,6 +15,25 @@ export default function CollegeSpecialPage() {
   const [isVerified, setIsVerified] = useState(false);
   const [expectedOtp, setExpectedOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [dynamicEvents, setDynamicEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((res) => res.json())
+      .then((allEvents: DisplayEvent[]) => {
+        const collegeOnly = allEvents
+          .filter((e) => e.isCollegeSpecial)
+          .map((e) => ({
+            ...e,
+            university: e.location,
+            type: e.category,
+          }));
+        setDynamicEvents(collegeOnly);
+      })
+      .catch((err) => console.error("Failed to fetch college events", err));
+  }, []);
+
+  const allVisibleEvents = [...dynamicEvents, ...staticCollegeEvents];
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,7 +218,7 @@ export default function CollegeSpecialPage() {
       {/* College Events Grid */}
       <section className="relative w-full max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {collegeEvents.map((event) => (
+          {allVisibleEvents.map((event) => (
             <Link href={`/college-special/${event.id}`} key={event.id}>
               <div 
                 className="group relative flex flex-col h-full bg-transparent border border-white/10 overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:border-[#b49b5c]/40 cursor-pointer"
