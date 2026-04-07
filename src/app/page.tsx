@@ -91,7 +91,7 @@ export default function HomePage() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
           >
-             <h1 className="text-6xl md:text-8xl font-serif tracking-tight drop-shadow-xl text-white">
+             <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif tracking-tight drop-shadow-xl text-white">
                 Redefine the <br />
                 <span className="text-[#b49b5c] italic">Standard of Events</span>
              </h1>
@@ -101,7 +101,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-lg md:text-xl text-[#9b9b9b] font-light max-w-2xl mx-auto drop-shadow"
+            className="text-base md:text-xl text-[#9b9b9b] font-light max-w-2xl mx-auto drop-shadow px-4"
           >
              Event Sphere is the premier ecosystem for booking, orchestrating, and experiencing world-class gatherings.
           </motion.p>
@@ -139,8 +139,8 @@ export default function HomePage() {
           <div className="w-12 h-[1px] bg-[#b49b5c]/50"></div>
         </motion.div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none z-0">
-          <h2 className="text-[15vw] leading-none font-serif tracking-widest text-white/[0.02] whitespace-nowrap">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none z-0 overflow-hidden">
+          <h2 className="text-[20vw] md:text-[15vw] leading-none font-serif tracking-widest text-white/[0.02] whitespace-nowrap opacity-50 md:opacity-100">
             UNPARALLELED
           </h2>
         </div>
@@ -150,14 +150,14 @@ export default function HomePage() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2 }}
-          className="z-10 max-w-4xl mx-auto space-y-8"
+          className="z-10 max-w-4xl mx-auto space-y-8 px-4"
         >
-          <h3 className="text-5xl md:text-7xl font-serif text-white leading-tight">
-            Elevating gatherings into <br />
+          <h3 className="text-3xl sm:text-5xl md:text-7xl font-serif text-white leading-tight">
+            Elevating gatherings into <br className="hidden sm:block" />
             <span className="text-[#b49b5c] italic">unforgettable memories.</span>
           </h3>
 
-          <p className="pt-8 text-base md:text-lg text-[#8a8a8a] leading-relaxed max-w-3xl mx-auto font-light">
+          <p className="pt-8 text-sm md:text-lg text-[#8a8a8a] leading-relaxed max-w-3xl mx-auto font-light">
             Event Sphere is a modern event booking and management platform designed to simplify how people plan, organize, and experience events. We bring together seamless booking, smart management tools, and a user-friendly interface.
           </p>
         </motion.div>
@@ -206,12 +206,12 @@ export default function HomePage() {
             >
               <button 
                 onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                className="w-full text-left p-6 flex items-center justify-between group"
+                className="w-full text-left p-4 md:p-6 flex items-start justify-between group"
               >
-                <h4 className="text-lg md:text-xl font-serif text-[#dcdcdc] group-hover:text-[#b49b5c] transition-colors duration-300">
+                <h4 className="text-base md:text-xl font-serif text-[#dcdcdc] group-hover:text-[#b49b5c] transition-colors duration-300 pr-8">
                   {faq.question}
                 </h4>
-                <span className={`text-[#b49b5c] transition-transform duration-500 ${openFaq === index ? "rotate-180" : ""}`}>
+                <span className={`text-[#b49b5c] transition-transform duration-500 mt-1 shrink-0 ${openFaq === index ? "rotate-180" : ""}`}>
                   ↓
                 </span>
               </button>
@@ -223,7 +223,7 @@ export default function HomePage() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div className="p-6 pt-0 text-[#8a8a8a] font-light leading-relaxed border-t border-white/5">
+                    <div className="p-4 md:p-6 pt-0 text-sm md:text-base text-[#8a8a8a] font-light leading-relaxed border-t border-white/5">
                       {faq.answer}
                     </div>
                   </motion.div>

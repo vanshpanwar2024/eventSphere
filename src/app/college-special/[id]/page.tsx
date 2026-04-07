@@ -44,29 +44,29 @@ export default async function CollegeEventDetailsPage({ params }: { params: Prom
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#070707] via-[#070707]/80 to-transparent"></div>
         
-        <div className="absolute bottom-0 left-0 w-full px-6 md:px-16 lg:px-32 pb-16 z-10">
-          <Link href="/college-special" className="text-[#b49b5c] text-xs tracking-widest uppercase mb-6 inline-block hover:text-white transition-colors">
-            ← Back to College Special
+        <div className="absolute bottom-0 left-0 w-full px-4 md:px-16 lg:px-32 pb-12 md:pb-16 z-10">
+          <Link href="/college-special" className="group text-[#b49b5c] text-[9px] md:text-xs tracking-widest uppercase mb-4 md:mb-6 inline-flex items-center gap-2 hover:text-white transition-colors">
+            <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to College Special
           </Link>
-          <div className="text-xs uppercase tracking-widest text-[#b49b5c] font-semibold mb-4">
+          <div className="text-[9px] md:text-xs uppercase tracking-widest text-[#b49b5c] font-semibold mb-3 md:mb-4">
             {event.type}
           </div>
-          <h1 className="text-5xl md:text-7xl font-serif tracking-wide text-white mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif tracking-wide text-white mb-6 leading-tight drop-shadow-2xl">
             {event.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-6 text-sm text-[#8a8a8a] uppercase tracking-widest">
-            <span className="flex items-center gap-2"><span className="text-[#b49b5c]">🎓</span> {event.university}</span>
-            <span className="flex items-center gap-2"><span className="text-[#b49b5c]">🗓</span> {event.date}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-[10px] md:text-sm text-[#8a8a8a] uppercase tracking-widest">
+            <span className="flex items-center gap-2"><span className="text-[#b49b5c] text-base">🎓</span> {event.university}</span>
+            <span className="flex items-center gap-2"><span className="text-[#b49b5c] text-base">🗓</span> {event.date}</span>
           </div>
         </div>
       </section>
 
       {/* Details Section */}
-      <section className="max-w-7xl mx-auto px-6 md:px-16 lg:px-32 pt-16 grid grid-cols-1 md:grid-cols-3 gap-16">
+      <section className="max-w-7xl mx-auto px-4 md:px-16 lg:px-32 pt-12 md:pt-16 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
         <div className="md:col-span-2 space-y-12">
           <div>
-            <h2 className="text-3xl font-serif text-white mb-6">About the College Fest</h2>
-            <p className="text-[#8a8a8a] leading-relaxed font-light text-lg">
+            <h2 className="text-2xl md:text-3xl font-serif text-white mb-6">About the College Fest</h2>
+            <p className="text-[#8a8a8a] leading-relaxed font-light text-base md:text-lg">
               {event.description}
             </p>
           </div>

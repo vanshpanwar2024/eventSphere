@@ -95,11 +95,11 @@ export default function CollegeSpecialPage() {
             <div className="w-12 h-[1px] bg-[#b49b5c]/50"></div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-serif tracking-wide drop-shadow-md text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif tracking-wide drop-shadow-md text-white px-4">
             Premier <span className="text-[#b49b5c] italic">College</span> Events
           </h1>
           
-          <p className="pt-6 text-sm md:text-base text-[#8a8a8a] leading-relaxed max-w-2xl mx-auto font-light">
+          <p className="pt-6 text-xs sm:text-sm md:text-base text-[#8a8a8a] leading-relaxed max-w-2xl mx-auto font-light px-6">
             Step into the next generation of experiences. 
             From cutting-edge tech symposiums to the most anticipated cultural nights 
             at India's elite institutions. Specially curated, priced for students.
@@ -108,13 +108,13 @@ export default function CollegeSpecialPage() {
       </section>
 
       {/* Verified Student Banner (Aesthetic Touch) */}
-      <section className="max-w-7xl mx-auto px-6 mb-20">
-        <div className="flex flex-col md:flex-row items-center justify-between bg-[#b49b5c]/5 border border-[#b49b5c]/20 rounded-sm p-8 transition-all duration-500">
+      <section className="max-w-7xl mx-auto px-4 md:px-6 mb-20">
+        <div className="flex flex-col md:flex-row items-center justify-between bg-[#b49b5c]/5 border border-[#b49b5c]/20 rounded-sm p-6 md:p-8 transition-all duration-500">
           <div className="mb-6 md:mb-0 space-y-2 text-center md:text-left flex-1">
-            <h3 className="font-serif text-2xl text-white">
+            <h3 className="font-serif text-xl md:text-2xl text-white">
               {isVerified ? "Student Status Verified" : "Verify Your Student ID"}
             </h3>
-            <p className="text-[#8a8a8a] text-sm">
+            <p className="text-[#8a8a8a] text-xs md:text-sm">
               {isVerified 
                 ? "Your exclusive student discounts have been unlocked. Enjoy the premium events."
                 : "Unlock up to 40% exclusive student discounts across all premium events."}
@@ -124,14 +124,14 @@ export default function CollegeSpecialPage() {
           {!isVerified && !showVerificationForm && (
             <button 
               onClick={() => setShowVerificationForm(true)}
-              className="border border-[#b49b5c] text-[#070707] bg-[#b49b5c] px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-transparent hover:text-[#b49b5c] transition-all duration-300"
+              className="w-full md:w-auto border border-[#b49b5c] text-[#070707] bg-[#b49b5c] px-8 py-3 uppercase tracking-widest text-[10px] md:text-xs font-bold hover:bg-transparent hover:text-[#b49b5c] transition-all duration-300"
             >
               Verify Now
             </button>
           )}
-
+          
           {isVerified && (
-            <div className="border border-[#b49b5c]/50 text-[#b49b5c] bg-transparent px-8 py-3 uppercase tracking-widest text-xs font-bold flex items-center space-x-2">
+            <div className="w-full md:w-auto border border-[#b49b5c]/50 text-[#b49b5c] bg-transparent px-8 py-3 uppercase tracking-widest text-[10px] md:text-xs font-bold flex items-center justify-center space-x-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
@@ -266,15 +266,15 @@ export default function CollegeSpecialPage() {
       </section>
 
       {/* Ambassador Application Section */}
-      <section className="relative w-full py-32 px-4 mt-20 flex flex-col items-center justify-center text-center bg-[#0a0a0a] border-t border-white/5">
+      <section className="relative w-full py-20 md:py-32 px-4 mt-20 flex flex-col items-center justify-center text-center bg-[#0a0a0a] border-t border-white/5">
         <div className="z-10 max-w-3xl space-y-6">
-          <h2 className="text-4xl font-serif text-white">
+          <h2 className="text-3xl md:text-4xl font-serif text-white px-4">
             Want to Host <span className="text-[#b49b5c] italic">Event Sphere</span> at Your Campus?
           </h2>
-          <p className="text-sm text-[#8a8a8a] leading-relaxed font-light pb-6">
+          <p className="text-xs md:text-sm text-[#8a8a8a] leading-relaxed font-light pb-6 px-6">
             Become a Campus Ambassador. Bring elite networking, state-of-the-art tech, and exclusive acts directly to your college festival. Lead the movement.
           </p>
-          <button className="border border-white/20 text-[#dcdcdc] px-10 py-3 rounded-none uppercase tracking-widest text-sm hover:border-[#b49b5c] hover:text-[#b49b5c] transition-all duration-300">
+          <button className="border border-white/20 text-[#dcdcdc] px-8 md:px-10 py-3 rounded-none uppercase tracking-widest text-[10px] md:text-sm hover:border-[#b49b5c] hover:text-[#b49b5c] transition-all duration-300">
             Apply for Campus Ambassador
           </button>
         </div>

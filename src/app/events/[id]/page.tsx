@@ -54,29 +54,29 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         <div className="absolute inset-0 bg-gradient-to-t from-[#070707] via-[#070707]/60 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#070707] via-transparent to-transparent opacity-60"></div>
         
-        <div className="absolute bottom-0 left-0 w-full px-6 md:px-16 lg:px-32 pb-24 z-10">
-          <Link href="/events" className="group text-[#b49b5c] text-[10px] tracking-[0.3em] uppercase mb-8 inline-flex items-center gap-2 hover:text-white transition-colors">
+        <div className="absolute bottom-0 left-0 w-full px-4 md:px-16 lg:px-32 pb-12 md:pb-24 z-10">
+          <Link href="/events" className="group text-[#b49b5c] text-[9px] md:text-[10px] tracking-[0.3em] uppercase mb-6 md:mb-8 inline-flex items-center gap-2 hover:text-white transition-colors">
             <span className="group-hover:-translate-x-1 transition-transform">←</span> Return to Collection
           </Link>
-          <div className="text-[10px] uppercase tracking-[0.4em] text-[#b49b5c] font-bold mb-6">
+          <div className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-[#b49b5c] font-bold mb-4 md:mb-6">
              {event.category}
           </div>
-          <h1 className="text-6xl md:text-8xl font-serif tracking-tight text-white mb-8 leading-tight drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif tracking-tight text-white mb-6 md:mb-8 leading-tight drop-shadow-2xl px-2 md:px-0">
             {event.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-10 text-[10px] text-[#8a8a8a] uppercase tracking-[0.3em] font-semibold">
-            <span className="flex items-center gap-3"><span className="text-[#b49b5c] text-lg">📍</span> {event.location}</span>
-            <span className="flex items-center gap-3"><span className="text-[#b49b5c] text-lg">🗓</span> {event.date}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-10 text-[9px] md:text-[10px] text-[#8a8a8a] uppercase tracking-[0.3em] font-semibold">
+            <span className="flex items-center gap-3"><span className="text-[#b49b5c] text-base md:text-lg">📍</span> {event.location}</span>
+            <span className="flex items-center gap-3"><span className="text-[#b49b5c] text-base md:text-lg">🗓</span> {event.date}</span>
           </div>
         </div>
       </section>
 
       {/* Details Section */}
-      <section className="max-w-7xl mx-auto px-6 md:px-16 lg:px-32 pt-24 grid grid-cols-1 md:grid-cols-3 gap-20">
-        <div className="md:col-span-2 space-y-16">
-          <div className="space-y-8">
-            <h2 className="text-4xl font-serif text-white italic border-l-2 border-[#b49b5c] pl-6 py-2">The Experience</h2>
-            <p className="text-[#8a8a8a] leading-relaxed font-light text-lg">
+      <section className="max-w-7xl mx-auto px-4 md:px-16 lg:px-32 pt-12 md:pt-24 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-20">
+        <div className="md:col-span-2 space-y-12 md:space-y-16">
+          <div className="space-y-6 md:space-y-8">
+            <h2 className="text-3xl md:text-4xl font-serif text-white italic border-l-2 border-[#b49b5c] pl-6 py-2">The Experience</h2>
+            <p className="text-[#8a8a8a] leading-relaxed font-light text-base md:text-lg">
               {event.description}
             </p>
           </div>

@@ -73,10 +73,10 @@ export default function HostEventPage() {
           </span>
           <div className="w-8 h-[1px] bg-[#b49b5c]/50"></div>
         </div>
-        <h1 className="text-5xl md:text-6xl font-serif tracking-wide text-white mb-6">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-wide text-white mb-6 px-4">
           Create an <span className="text-[#b49b5c] italic">Event</span>
         </h1>
-        <p className="text-sm md:text-base text-[#8a8a8a] font-light max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm md:text-base text-[#8a8a8a] font-light max-w-xl mx-auto px-6">
           Engineer an experience that your attendees will never forget. Fill in the details below to host your event on our platform.
         </p>
       </section>
@@ -142,13 +142,13 @@ export default function HostEventPage() {
                 </div>
 
                 {/* Event Classification */}
-                <div className="space-y-4 md:col-span-2 border border-white/5 p-6 bg-[#0c0c0c]/50">
-                  <div className="flex items-center justify-between">
+                <div className="space-y-4 md:col-span-2 border border-white/5 p-4 md:p-6 bg-[#0c0c0c]/50">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <label className="uppercase tracking-widest text-xs text-[#b49b5c] font-bold block mb-1">Event Classification *</label>
-                      <p className="text-[#8a8a8a] text-sm font-light">Is this a general event or a student-exclusive college special?</p>
+                      <label className="uppercase tracking-widest text-[10px] md:text-xs text-[#b49b5c] font-bold block mb-1">Event Classification *</label>
+                      <p className="text-[#8a8a8a] text-xs md:text-sm font-light">Is this a general event or a student-exclusive college special?</p>
                     </div>
-                    <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-4 md:space-x-6">
                        <label className="flex items-center cursor-pointer group">
                          <input
                            type="radio"
@@ -160,7 +160,7 @@ export default function HostEventPage() {
                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${!formData.isCollegeSpecial ? 'border-[#b49b5c] bg-[#b49b5c]/10' : 'border-white/20'}`}>
                            {!formData.isCollegeSpecial && <div className="w-1.5 h-1.5 rounded-full bg-[#b49b5c]"></div>}
                          </div>
-                         <span className={`ml-2 text-xs uppercase tracking-widest ${!formData.isCollegeSpecial ? 'text-white' : 'text-[#666] group-hover:text-[#8a8a8a]'}`}>Standard</span>
+                         <span className={`ml-2 text-[10px] md:text-xs uppercase tracking-widest ${!formData.isCollegeSpecial ? 'text-white' : 'text-[#666] group-hover:text-[#8a8a8a]'}`}>Standard</span>
                        </label>
                        
                        <label className="flex items-center cursor-pointer group">
@@ -174,7 +174,7 @@ export default function HostEventPage() {
                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${formData.isCollegeSpecial ? 'border-[#b49b5c] bg-[#b49b5c]/10' : 'border-white/20'}`}>
                            {formData.isCollegeSpecial && <div className="w-1.5 h-1.5 rounded-full bg-[#b49b5c]"></div>}
                          </div>
-                         <span className={`ml-2 text-xs uppercase tracking-widest ${formData.isCollegeSpecial ? 'text-white' : 'text-[#666] group-hover:text-[#8a8a8a]'}`}>College Special</span>
+                         <span className={`ml-2 text-[10px] md:text-xs uppercase tracking-widest ${formData.isCollegeSpecial ? 'text-white' : 'text-[#666] group-hover:text-[#8a8a8a]'}`}>College Special</span>
                        </label>
                     </div>
                   </div>
@@ -251,13 +251,13 @@ export default function HostEventPage() {
                 </div>
 
                 {/* Pricing Type Toggle */}
-                <div className="space-y-4 md:col-span-2 border border-white/10 p-6 bg-[#0c0c0c]">
-                  <div className="flex items-center justify-between">
+                <div className="space-y-4 md:col-span-2 border border-white/10 p-4 md:p-6 bg-[#0c0c0c]">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <label className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold block mb-1">Pricing Model *</label>
-                      <p className="text-[#8a8a8a] text-sm">Will this event require attendees to purchase a ticket?</p>
+                      <label className="uppercase tracking-widest text-[10px] md:text-xs text-[#8a8a8a] font-semibold block mb-1">Pricing Model *</label>
+                      <p className="text-[#8a8a8a] text-xs md:text-sm">Will this event require attendees to purchase a ticket?</p>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
+                    <label className="relative inline-flex items-center cursor-pointer w-fit">
                       <input
                         type="checkbox"
                         name="isPaid"
@@ -266,7 +266,7 @@ export default function HostEventPage() {
                         className="sr-only peer"
                       />
                       <div className="w-14 h-7 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-[#b49b5c]"></div>
-                      <span className="ml-3 text-sm font-medium text-white uppercase tracking-wider">{formData.isPaid ? 'Paid' : 'Free'}</span>
+                      <span className="ml-3 text-[10px] md:text-sm font-medium text-white uppercase tracking-wider">{formData.isPaid ? 'Paid' : 'Free'}</span>
                     </label>
                   </div>
 

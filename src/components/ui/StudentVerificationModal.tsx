@@ -177,7 +177,7 @@ export default function StudentVerificationModal({
                        <p className="text-xs text-[#8a8a8a] font-light italic">A unique code has been sent to your academic portal.</p>
                     </div>
 
-                    <div className="flex justify-between gap-2">
+                    <div className="flex justify-between gap-1 sm:gap-2">
                       {otp.map((digit, i) => (
                         <input
                           key={i}
@@ -187,7 +187,7 @@ export default function StudentVerificationModal({
                           ref={(el) => { otpRefs.current[i] = el; }}
                           onChange={(e) => handleOtpChange(i, e.target.value)}
                           onKeyDown={(e) => handleKeyDown(i, e)}
-                          className="w-12 h-14 bg-[#070707] border border-white/10 text-center text-xl text-[#b49b5c] font-serif focus:border-[#b49b5c] outline-none transition-all"
+                          className="w-10 h-12 sm:w-12 sm:h-14 bg-[#070707] border border-white/10 text-center text-lg sm:text-xl text-[#b49b5c] font-serif focus:border-[#b49b5c] outline-none transition-all"
                         />
                       ))}
                     </div>

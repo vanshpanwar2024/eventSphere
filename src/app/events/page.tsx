@@ -91,7 +91,7 @@ export default function EventsPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-5xl md:text-6xl font-serif tracking-wide text-white mb-6"
+          className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-wide text-white mb-6 px-4"
         >
           Curated <span className="text-[#b49b5c] italic">Experiences</span>
         </motion.h1>
@@ -100,7 +100,7 @@ export default function EventsPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-sm md:text-base text-[#8a8a8a] font-light max-w-xl mx-auto"
+          className="text-xs sm:text-sm md:text-base text-[#8a8a8a] font-light max-w-xl mx-auto px-6"
         >
           Explore our handpicked selection of upcoming events. From global summits to exclusive private galas, find your next extraordinary moment.
         </motion.p>
@@ -110,7 +110,7 @@ export default function EventsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="mt-16 flex flex-wrap justify-center gap-4 text-xs tracking-widest uppercase font-semibold"
+          className="mt-12 md:mt-16 flex flex-wrap justify-center gap-2 md:gap-4 text-[10px] md:text-xs tracking-widest uppercase font-semibold px-4"
         >
           {FILTERS.map((tag) => {
             const isActive = activeFilter === tag;
@@ -118,13 +118,13 @@ export default function EventsPage() {
               <button 
                 key={tag}
                 onClick={() => handleFilterChange(tag)} 
-                className={`px-6 py-2 border relative transition-all duration-300 ${
+                className={`px-4 md:px-6 py-2 border relative transition-all duration-300 ${
                   isActive 
                     ? "border-[#b49b5c] text-[#b49b5c]" 
                     : "border-white/10 text-[#6b6b6b] hover:border-white/30 hover:text-white"
                 }`}
               >
-                {tag}
+                <span className="relative z-10">{tag}</span>
                 {isActive && (
                   <motion.div 
                     layoutId="activeFilter"
