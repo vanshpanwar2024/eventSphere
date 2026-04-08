@@ -30,8 +30,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${cormorant.variable} ${montserrat.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#070707] text-[#dcdcdc]">
+      <body className="min-h-full flex flex-col font-sans bg-[#070707] text-[#dcdcdc]" suppressHydrationWarning>
         <SessionWrapper>
           <main className="flex-1">
             {children}
