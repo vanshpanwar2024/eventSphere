@@ -13,11 +13,10 @@ export async function POST(request: Request) {
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     let transporter = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      service: "gmail",
       auth: {
-        user: "1e90e17ed23455", 
-        pass: "a0f3a5f06694c8",
+        user: process.env.EMAIL_USER, // Your Gmail address
+        pass: process.env.EMAIL_APP_PASSWORD, // Your Google App Password
       },
     });
 
