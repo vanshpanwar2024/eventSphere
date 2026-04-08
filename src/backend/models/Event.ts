@@ -8,6 +8,8 @@ export class EventModel {
   private isPaid: boolean;
   private ticketPrice?: number;
   private isCollegeSpecial: boolean;
+  private brochureUrl?: string;
+  private thumbnailUrl?: string;
 
   constructor(data: {
     title: string;
@@ -19,6 +21,8 @@ export class EventModel {
     isPaid?: boolean;
     ticketPrice?: number;
     isCollegeSpecial?: boolean;
+    brochureUrl?: string;
+    thumbnailUrl?: string;
   }) {
     this.title = data.title;
     this.description = data.description;
@@ -28,6 +32,8 @@ export class EventModel {
     this.maxParticipants = Number(data.maxParticipants);
     this.isPaid = Boolean(data.isPaid);
     this.isCollegeSpecial = Boolean(data.isCollegeSpecial);
+    this.brochureUrl = data.brochureUrl;
+    this.thumbnailUrl = data.thumbnailUrl;
     if (this.isPaid) {
       this.ticketPrice = data.ticketPrice ? Number(data.ticketPrice) : 0;
     } else {
@@ -45,6 +51,8 @@ export class EventModel {
   public getIsPaid(): boolean { return this.isPaid; }
   public getTicketPrice(): number | undefined { return this.ticketPrice; }
   public getIsCollegeSpecial(): boolean { return this.isCollegeSpecial; }
+  public getBrochureUrl(): string | undefined { return this.brochureUrl; }
+  public getThumbnailUrl(): string | undefined { return this.thumbnailUrl; }
 
   // Validation
   public validate(): string[] {
@@ -78,6 +86,8 @@ export class EventModel {
       isPaid: this.isPaid,
       ticketPrice: this.ticketPrice,
       isCollegeSpecial: this.isCollegeSpecial,
+      brochureUrl: this.brochureUrl,
+      thumbnailUrl: this.thumbnailUrl,
     };
   }
 }

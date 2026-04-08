@@ -8,6 +8,8 @@ export interface CreateEventPayload {
   isPaid: boolean;
   ticketPrice?: number;
   isCollegeSpecial: boolean;
+  brochureUrl?: string;
+  thumbnailUrl?: string;
 }
 
 export const frontendEventService = {

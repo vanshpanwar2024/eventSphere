@@ -17,11 +17,14 @@ export default function HostEventPage() {
     isPaid: false,
     ticketPrice: 0,
     isCollegeSpecial: false,
+    brochureUrl: "",
+    thumbnailUrl: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -31,6 +34,27 @@ export default function HostEventPage() {
       ...prev,
       [name]: type === "checkbox" ? checked : (name === "maxParticipants" || name === "ticketPrice" ? Number(value) : value),
     }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setError('Please upload a valid image file for the thumbnail.');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setThumbnailPreview(base64String);
+        setFormData(prev => ({
+          ...prev,
+          thumbnailUrl: base64String
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,7 +77,10 @@ export default function HostEventPage() {
         isPaid: false,
         ticketPrice: 0,
         isCollegeSpecial: false,
+        brochureUrl: "",
+        thumbnailUrl: "",
       });
+      setThumbnailPreview(null);
     } catch (err: any) {
       setError(err.message || "Something went wrong while creating the event.");
     } finally {
@@ -290,6 +317,46 @@ export default function HostEventPage() {
                       </div>
                     </div>
                   )}
+                </div>
+
+                {/* Thumbnail Upload */}
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="thumbnail" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">Event Thumbnail</label>
+                  <div className="mt-1 flex items-center justify-center w-full">
+                    <label htmlFor="thumbnail" className="flex flex-col items-center justify-center w-full h-48 border-2 border-white/20 border-dashed hover:border-[#b49b5c] transition-colors cursor-pointer bg-[#0a0a0a]">
+                      {thumbnailPreview ? (
+                        <div className="relative w-full h-full p-2">
+                          <img src={thumbnailPreview} alt="Event thumbnail" className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity">
+                            <span className="text-white text-xs uppercase tracking-widest">Change Image</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <svg className="w-8 h-8 mb-4 text-[#8a8a8a]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                          </svg>
+                          <p className="mb-2 text-sm text-[#8a8a8a] font-light"><span className="font-medium text-white">Click to upload</span> or drag and drop</p>
+                          <p className="text-xs text-[#8a8a8a]">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                      )}
+                      <input id="thumbnail" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Brochure GDrive Link */}
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="brochureUrl" className="uppercase tracking-widest text-xs text-[#8a8a8a] font-semibold">Brochure Link (Optional)</label>
+                  <input
+                    id="brochureUrl"
+                    name="brochureUrl"
+                    type="url"
+                    value={formData.brochureUrl || ""}
+                    onChange={handleChange}
+                    className="w-full bg-transparent border-b border-white/20 py-3 text-white focus:outline-none focus:border-[#b49b5c] transition-colors"
+                    placeholder="e.g. https://drive.google.com/file/d/..."
+                  />
                 </div>
 
                 {/* Description */}
