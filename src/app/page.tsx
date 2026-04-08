@@ -153,12 +153,12 @@ export default function HomePage() {
           className="z-10 max-w-4xl mx-auto space-y-8 px-4"
         >
           <h3 className="text-3xl sm:text-5xl md:text-7xl font-serif text-white leading-tight">
-            Elevating gatherings into <br className="hidden sm:block" />
-            <span className="text-[#b49b5c] italic">unforgettable memories.</span>
+            We Don&apos;t Just Organise Events. <br className="hidden sm:block" />
+            <span className="text-[#b49b5c] italic">We Engineer Experiences.</span>
           </h3>
 
           <p className="pt-8 text-sm md:text-lg text-[#8a8a8a] leading-relaxed max-w-3xl mx-auto font-light">
-            Event Sphere is a modern event booking and management platform designed to simplify how people plan, organize, and experience events. We bring together seamless booking, smart management tools, and a user-friendly interface.
+            Event Sphere is a modern event booking and management platform designed to simplify how people plan, organize, and experience events. We bring together seamless booking, smart management tools, and a user-friendly interface to help individuals and organizations create individuals to memorable experiences with ease. Whether it&apos;s a small gathering or a large-scale event, Event Sphere ensures every detail is handled efficiently, making event planning stress-free and accessible for everyone.
           </p>
         </motion.div>
       </section>
