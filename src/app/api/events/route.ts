@@ -7,7 +7,11 @@ const eventRepository = new EventRepository();
 
 export async function GET() {
   const hostedRaw = await eventRepository.findAll();
-  const hostedDisplay = hostedRaw.map((row) =>
+  
+  // Only include approved events
+  const approvedHostedRaw = hostedRaw.filter(row => row.status === 'approved');
+
+  const hostedDisplay = approvedHostedRaw.map((row) =>
     mapHostedRecordToDisplayEvent({
       id: row.id,
       title: row.title,
@@ -19,6 +23,8 @@ export async function GET() {
       isPaid: row.isPaid,
       ticketPrice: row.ticketPrice,
       isCollegeSpecial: row.isCollegeSpecial,
+      brochureUrl: row.brochureUrl,
+      thumbnailUrl: row.thumbnailUrl,
     })
   );
   const merged = [...hostedDisplay, ...eventsData];

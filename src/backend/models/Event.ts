@@ -10,6 +10,7 @@ export class EventModel {
   private isCollegeSpecial: boolean;
   private brochureUrl?: string;
   private thumbnailUrl?: string;
+  private status: 'pending' | 'approved' | 'declined';
 
   constructor(data: {
     title: string;
@@ -23,6 +24,7 @@ export class EventModel {
     isCollegeSpecial?: boolean;
     brochureUrl?: string;
     thumbnailUrl?: string;
+    status?: 'pending' | 'approved' | 'declined';
   }) {
     this.title = data.title;
     this.description = data.description;
@@ -34,6 +36,7 @@ export class EventModel {
     this.isCollegeSpecial = Boolean(data.isCollegeSpecial);
     this.brochureUrl = data.brochureUrl;
     this.thumbnailUrl = data.thumbnailUrl;
+    this.status = data.status || 'pending';
     if (this.isPaid) {
       this.ticketPrice = data.ticketPrice ? Number(data.ticketPrice) : 0;
     } else {
@@ -53,6 +56,7 @@ export class EventModel {
   public getIsCollegeSpecial(): boolean { return this.isCollegeSpecial; }
   public getBrochureUrl(): string | undefined { return this.brochureUrl; }
   public getThumbnailUrl(): string | undefined { return this.thumbnailUrl; }
+  public getStatus(): 'pending' | 'approved' | 'declined' { return this.status; }
 
   // Validation
   public validate(): string[] {
@@ -88,6 +92,7 @@ export class EventModel {
       isCollegeSpecial: this.isCollegeSpecial,
       brochureUrl: this.brochureUrl,
       thumbnailUrl: this.thumbnailUrl,
+      status: this.status,
     };
   }
 }

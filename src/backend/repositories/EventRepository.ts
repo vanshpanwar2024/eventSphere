@@ -5,6 +5,7 @@ export interface IEventRepository {
   save(event: EventModel): Promise<any>;
   findAll(): Promise<any[]>;
   findById(id: number | string): Promise<any | undefined>;
+  updateStatus(id: number | string, status: 'approved' | 'declined'): Promise<any>;
 }
 
 export class EventRepository implements IEventRepository {
@@ -49,6 +50,21 @@ export class EventRepository implements IEventRepository {
     if (error) {
       console.error("Supabase select by id error:", error);
       return undefined;
+    }
+    return data;
+  }
+
+  public async updateStatus(id: number | string, status: 'approved' | 'declined'): Promise<any> {
+    const { data, error } = await supabase
+      .from('events')
+      .update({ status })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(`Supabase update status error for id ${id}:`, error);
+      throw new Error(`Failed to update event status: ${error.message}`);
     }
     return data;
   }
