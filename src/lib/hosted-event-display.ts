@@ -12,6 +12,7 @@ export interface DisplayEvent {
   organizer: string;
   time: string;
   isCollegeSpecial?: boolean;
+  brochureUrl?: string;
 }
 
 const CATEGORY_IMAGES: Record<string, string> = {
@@ -69,5 +70,6 @@ export function mapHostedRecordToDisplayEvent(record: {
     organizer: "Event Sphere Host",
     time,
     isCollegeSpecial: record.isCollegeSpecial,
+    brochureUrl: record.brochureUrl,
   };
 }

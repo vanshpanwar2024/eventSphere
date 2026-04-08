@@ -38,6 +38,9 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       maxParticipants: hosted.maxParticipants,
       isPaid: hosted.isPaid,
       ticketPrice: hosted.ticketPrice,
+      isCollegeSpecial: hosted.isCollegeSpecial,
+      brochureUrl: hosted.brochureUrl,
+      thumbnailUrl: hosted.thumbnailUrl,
     });
   }
 
@@ -76,9 +79,23 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         <div className="md:col-span-2 space-y-12 md:space-y-16">
           <div className="space-y-6 md:space-y-8">
             <h2 className="text-3xl md:text-4xl font-serif text-white italic border-l-2 border-[#b49b5c] pl-6 py-2">The Experience</h2>
-            <p className="text-[#8a8a8a] leading-relaxed font-light text-base md:text-lg">
+            <p className="text-[#8a8a8a] leading-relaxed font-light text-base md:text-lg whitespace-pre-wrap">
               {event.description}
             </p>
+            {/* Optional Brochure Download/View link */}
+            {(event as any).brochureUrl && (
+              <div className="pt-4">
+                <a 
+                  href={(event as any).brochureUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 border border-[#b49b5c] text-[#b49b5c] hover:bg-[#b49b5c] hover:text-[#070707] transition-colors text-xs uppercase tracking-widest font-semibold"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  View Event Brochure
+                </a>
+              </div>
+            )}
           </div>
           
           <div className="border-t border-white/5 pt-16 group">

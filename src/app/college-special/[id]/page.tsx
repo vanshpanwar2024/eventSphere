@@ -66,9 +66,23 @@ export default async function CollegeEventDetailsPage({ params }: { params: Prom
         <div className="md:col-span-2 space-y-12">
           <div>
             <h2 className="text-2xl md:text-3xl font-serif text-white mb-6">About the College Fest</h2>
-            <p className="text-[#8a8a8a] leading-relaxed font-light text-base md:text-lg">
+            <p className="text-[#8a8a8a] leading-relaxed font-light text-base md:text-lg whitespace-pre-wrap">
               {event.description}
             </p>
+            {/* Optional Brochure Download/View link */}
+            {(event as any).brochureUrl && (
+              <div className="pt-6">
+                <a 
+                  href={(event as any).brochureUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 border border-[#b49b5c] text-[#b49b5c] hover:bg-[#b49b5c] hover:text-[#070707] transition-colors text-xs uppercase tracking-widest font-semibold"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  View Fest Brochure
+                </a>
+              </div>
+            )}
           </div>
           
           <div className="border-t border-white/5 pt-12">

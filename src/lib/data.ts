@@ -1,7 +1,7 @@
 export const eventsData = [
   // TECH
   {
-    id: 1,
+    id: 100001,
     title: "Global UX Summit 2026",
     category: "Tech",
     date: "Oct 15 - 17, 2026",
@@ -13,7 +13,7 @@ export const eventsData = [
     time: "10:00 AM - 05:00 PM",
   },
   {
-    id: 5,
+    id: 100005,
     title: "Future of AI Workshop",
     category: "Tech",
     date: "Feb 22, 2027",
@@ -25,7 +25,7 @@ export const eventsData = [
     time: "09:00 AM - 06:00 PM",
   },
   {
-    id: 10,
+    id: 100010,
     title: "Web3 Developers Conference",
     category: "Tech",
     date: "Jul 05, 2027",
@@ -37,7 +37,7 @@ export const eventsData = [
     time: "11:00 AM - 08:00 PM",
   },
   {
-    id: 11,
+    id: 100011,
     title: "CyberTech Global Forum",
     category: "Tech",
     date: "Aug 12 - 14, 2027",
@@ -51,7 +51,7 @@ export const eventsData = [
 
   // MUSIC
   {
-    id: 2,
+    id: 100002,
     title: "Midnight Symphony Gala",
     category: "Music",
     date: "Nov 02, 2026",
@@ -63,7 +63,7 @@ export const eventsData = [
     time: "08:00 PM - 11:30 PM",
   },
   {
-    id: 12,
+    id: 100012,
     title: "Electronic Beats Festival",
     category: "Music",
     date: "Sep 20, 2027",
@@ -75,7 +75,7 @@ export const eventsData = [
     time: "04:00 PM - 06:00 AM",
   },
   {
-    id: 13,
+    id: 100013,
     title: "Jazz in the Park",
     category: "Music",
     date: "Oct 10, 2027",
@@ -87,7 +87,7 @@ export const eventsData = [
     time: "05:00 PM - 10:00 PM",
   },
   {
-    id: 14,
+    id: 100014,
     title: "Neo-Classical Night",
     category: "Music",
     date: "Nov 05, 2027",
@@ -101,7 +101,7 @@ export const eventsData = [
 
   // FOOD
   {
-    id: 4,
+    id: 100004,
     title: "Culinary Masters Tasting",
     category: "Food",
     date: "Jan 18, 2027",
@@ -113,7 +113,7 @@ export const eventsData = [
     time: "07:00 PM - 11:00 PM",
   },
   {
-    id: 15,
+    id: 100015,
     title: "Street Food Carnival",
     category: "Food",
     date: "Dec 05, 2026",
@@ -125,7 +125,7 @@ export const eventsData = [
     time: "12:00 PM - 10:00 PM",
   },
   {
-    id: 16,
+    id: 100016,
     title: "Wine & Cheese Pairing Masterclass",
     category: "Food",
     date: "Mar 12, 2027",
@@ -139,7 +139,7 @@ export const eventsData = [
 
   // FASHION
   {
-    id: 6,
+    id: 100006,
     title: "Exclusive Fashion Week",
     category: "Fashion",
     date: "Mar 05 - 12, 2027",
@@ -151,7 +151,7 @@ export const eventsData = [
     time: "Various Times Across Week",
   },
   {
-    id: 17,
+    id: 100017,
     title: "Sustainable Fashion Expo",
     category: "Fashion",
     date: "Apr 20, 2027",
@@ -163,7 +163,7 @@ export const eventsData = [
     time: "10:00 AM - 06:00 PM",
   },
   {
-    id: 18,
+    id: 100018,
     title: "Avant-Garde Showcase",
     category: "Fashion",
     date: "Oct 18, 2027",
@@ -177,7 +177,7 @@ export const eventsData = [
 
   // OTHER / UNCATEGORIZED
   {
-    id: 3,
+    id: 100003,
     title: "Tech Innovators Retreat",
     category: "Tech",
     date: "Dec 10, 2026",
@@ -189,7 +189,7 @@ export const eventsData = [
     time: "2 Day Event",
   },
   {
-    id: 7,
+    id: 100007,
     title: "Wellness & Yoga Retreat",
     category: "Health & Wellness",
     date: "Apr 10 - 14, 2027",
@@ -201,7 +201,7 @@ export const eventsData = [
     time: "5 Day Residential Program",
   },
   {
-    id: 8,
+    id: 100008,
     title: "Startup Pitch Day",
     category: "Business",
     date: "May 20, 2027",
@@ -213,7 +213,7 @@ export const eventsData = [
     time: "09:00 AM - 08:00 PM",
   },
   {
-    id: 9,
+    id: 100009,
     title: "Modern Architecture Expo",
     category: "Design",
     date: "Jun 15 - 18, 2027",
@@ -228,7 +228,7 @@ export const eventsData = [
 
 export const collegeEventsData = [
   {
-    id: 101,
+    id: 100101,
     title: "IIT Bombay TechFest '26",
     university: "Indian Institute of Technology, Bombay",
     date: "Dec 18 - 20, 2026",
@@ -240,7 +240,7 @@ export const collegeEventsData = [
     time: "3 Day Extravaganza",
   },
   {
-    id: 102,
+    id: 100102,
     title: "SRCC Business Conclave",
     university: "Shri Ram College of Commerce, Delhi",
     date: "Jan 12 - 14, 2027",
@@ -252,7 +252,7 @@ export const collegeEventsData = [
     time: "09:00 AM - 06:00 PM Daily",
   },
   {
-    id: 103,
+    id: 100103,
     title: "BITS Pilani Oasis '26",
     university: "BITS Pilani",
     date: "Oct 28 - 31, 2026",
@@ -264,7 +264,7 @@ export const collegeEventsData = [
     time: "96 Hours Non-Stop",
   },
   {
-    id: 104,
+    id: 100104,
     title: "NID Design Symposium",
     university: "National Institute of Design, Ahmedabad",
     date: "Mar 05, 2027",
@@ -276,7 +276,7 @@ export const collegeEventsData = [
     time: "10:00 AM - 08:00 PM",
   },
   {
-    id: 105,
+    id: 100105,
     title: "IIM Ahmedabad Chaos",
     university: "Indian Institute of Management, Ahmedabad",
     date: "Jan 22 - 25, 2027",
@@ -288,7 +288,7 @@ export const collegeEventsData = [
     time: "4 Day Event",
   },
   {
-    id: 106,
+    id: 100106,
     title: "VIT GraVITas '26",
     university: "Vellore Institute of Technology",
     date: "Sep 15 - 17, 2026",
