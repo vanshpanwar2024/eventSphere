@@ -46,6 +46,29 @@ The backend implements a formal **N-Tier Layered Architecture** emphasizing Obje
 
 ---
 
+## 📊 System Diagrams
+
+### UML Class Diagram
+The class diagram illustrates the backend architecture following the MVC + Repository pattern with Dependency Injection. It shows the relationships between Controllers, Services, Repositories, Models, and frontend components.
+
+![Class Diagram — EventSphere](docs/diagrams/class-diagram.png)
+
+---
+
+### Use Case Diagram
+The use case diagram captures all actor interactions with the EventSphere system, including Guest browsing, Authenticated User actions (hosting events, booking, orders), and system-level integrations like NextAuth providers.
+
+![Use Case Diagram — EventSphere](docs/diagrams/usecase-diagram.png)
+
+---
+
+### ER Diagram (Entity-Relationship)
+The ER diagram models the data entities — NextAuthSession, HostedEventRecord, StaticEvent, DisplayEvent, and CollegeEvent — along with their attributes and relationships.
+
+![ER Diagram — EventSphere](docs/diagrams/er-diagram.png)
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
