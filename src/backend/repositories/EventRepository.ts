@@ -1,71 +1,30 @@
 import { EventModel } from "../models/Event";
-import { supabase } from "@/lib/supabase";
+import { BaseRepository } from "../core/repositories/BaseRepository";
 
 export interface IEventRepository {
   save(event: EventModel): Promise<any>;
   findAll(): Promise<any[]>;
-  findById(id: number | string): Promise<any | undefined>;
-  updateStatus(id: number | string, status: 'approved' | 'declined'): Promise<any>;
+  findById(id: number | string): Promise<any | null>;
+  updateStatus(id: number | string, status: 'approved' | 'declined' | 'pending'): Promise<any>;
 }
 
-export class EventRepository implements IEventRepository {
+export class EventRepository extends BaseRepository<EventModel> implements IEventRepository {
+  private readonly tableName = 'events';
+
   public async save(event: EventModel): Promise<any> {
     const newEvent = { ...event.toJSON() };
-    
-    // Default to an initial 0 or id generation from DB via insert
-    const { data, error } = await supabase
-      .from('events')
-      .insert([newEvent])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Supabase insert error:", error);
-      throw new Error(`Failed to save event to database: ${error.message}`);
-    }
-    
-    return data;
+    return this.saveBase(this.tableName, newEvent);
   }
 
   public async findAll(): Promise<any[]> {
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .order('id', { ascending: false });
-
-    if (error) {
-      console.error("Supabase select error:", error);
-      return [];
-    }
-    return data || [];
+    return super.findAll(this.tableName);
   }
 
-  public async findById(id: number | string): Promise<any | undefined> {
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      console.error("Supabase select by id error:", error);
-      return undefined;
-    }
-    return data;
+  public async findById(id: number | string): Promise<any | null> {
+    return super.findById(this.tableName, id);
   }
 
-  public async updateStatus(id: number | string, status: 'approved' | 'declined'): Promise<any> {
-    const { data, error } = await supabase
-      .from('events')
-      .update({ status })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error(`Supabase update status error for id ${id}:`, error);
-      throw new Error(`Failed to update event status: ${error.message}`);
-    }
-    return data;
+  public async updateStatus(id: number | string, status: 'approved' | 'declined' | 'pending'): Promise<any> {
+    return super.update(this.tableName, id, { status });
   }
 }

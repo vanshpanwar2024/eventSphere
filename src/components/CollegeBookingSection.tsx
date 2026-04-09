@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import StudentVerificationModal from "@/components/ui/StudentVerificationModal";
 import DigitalPassModal from "@/components/ui/DigitalPassModal";
 import PaymentGatewayModal from "@/components/ui/PaymentGatewayModal";
@@ -11,6 +12,7 @@ interface CollegeBookingSectionProps {
 }
 
 export default function CollegeBookingSection({ event }: CollegeBookingSectionProps) {
+  const { data: session } = useSession();
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isPurchased, setIsPurchased] = useState(false);
@@ -19,12 +21,17 @@ export default function CollegeBookingSection({ event }: CollegeBookingSectionPr
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   useEffect(() => {
-    // Check local storage for existing student validation everywhere
-    const verifiedStatus = localStorage.getItem("isStudentVerified");
-    if (verifiedStatus === "true") {
-      setIsVerified(true);
+    if (session?.user?.email) {
+      fetch(`/api/user/verify-student?email=${encodeURIComponent(session.user.email)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.isVerified) {
+            setIsVerified(true);
+          }
+        })
+        .catch(console.error);
     }
-  }, []);
+  }, [session?.user?.email]);
 
   const handleApply = () => {
     if (!isVerified) {
@@ -36,7 +43,6 @@ export default function CollegeBookingSection({ event }: CollegeBookingSectionPr
 
   const handleVerificationSuccess = () => {
     setIsVerified(true);
-    localStorage.setItem("isStudentVerified", "true");
     setTimeout(() => {
       setIsPaymentModalOpen(true);
     }, 500);

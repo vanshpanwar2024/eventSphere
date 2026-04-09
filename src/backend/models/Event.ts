@@ -1,4 +1,6 @@
-export class EventModel {
+import { BaseEntity } from "../core/models/BaseEntity";
+
+export class EventModel extends BaseEntity {
   private title: string;
   private description: string;
   private dateTime: Date;
@@ -13,6 +15,7 @@ export class EventModel {
   private status: 'pending' | 'approved' | 'declined';
 
   constructor(data: {
+    id?: string | number;
     title: string;
     description: string;
     dateTime: Date | string;
@@ -25,7 +28,10 @@ export class EventModel {
     brochureUrl?: string;
     thumbnailUrl?: string;
     status?: 'pending' | 'approved' | 'declined';
+    createdAt?: string;
+    updatedAt?: string;
   }) {
+    super(data.id, data.createdAt, data.updatedAt);
     this.title = data.title;
     this.description = data.description;
     this.dateTime = new Date(data.dateTime);
@@ -37,6 +43,7 @@ export class EventModel {
     this.brochureUrl = data.brochureUrl;
     this.thumbnailUrl = data.thumbnailUrl;
     this.status = data.status || 'pending';
+    
     if (this.isPaid) {
       this.ticketPrice = data.ticketPrice ? Number(data.ticketPrice) : 0;
     } else {
@@ -78,9 +85,10 @@ export class EventModel {
     return errors;
   }
 
-  // Convert to JSON
-  public toJSON() {
+  // Convert to JSON implementation mandated by BaseEntity
+  public toJSON(): Record<string, any> {
     return {
+      ...(this.id ? { id: this.id } : {}),
       title: this.title,
       description: this.description,
       dateTime: this.dateTime.toISOString(),
@@ -93,6 +101,8 @@ export class EventModel {
       brochureUrl: this.brochureUrl,
       thumbnailUrl: this.thumbnailUrl,
       status: this.status,
+      ...(this.createdAt ? { createdAt: this.createdAt } : {}),
+      ...(this.updatedAt ? { updatedAt: this.updatedAt } : {}),
     };
   }
 }

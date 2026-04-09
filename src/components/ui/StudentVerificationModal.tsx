@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,7 @@ export default function StudentVerificationModal({
   onSuccess,
   eventTitle,
 }: StudentVerificationModalProps) {
+  const { data: session } = useSession();
   const [step, setStep] = useState<"email" | "otp" | "success">("email");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -89,8 +91,16 @@ export default function StudentVerificationModal({
     
     if (enteredOtp === sentOtp || enteredOtp === "123456") { // 123456 for testing override if needed
       setStep("success");
-      // Save verification status to local storage everywhere
-      localStorage.setItem("isStudentVerified", "true");
+      
+      // Save it to Supabase if session exists
+      if (session?.user?.email) {
+        fetch("/api/user/verify-student", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: session.user.email, enrollmentId: email }), 
+        }).catch(err => console.error("Failed to save verification to database:", err));
+      }
+
       setTimeout(() => {
         onSuccess();
         onClose();

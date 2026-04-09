@@ -25,22 +25,120 @@ export default function PaymentGatewayModal({
   const [paymentMethod, setPaymentMethod] = useState<"card" | "upi">("card");
   const [upiId, setUpiId] = useState("");
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (document.getElementById("razorpay-sdk")) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.id = "razorpay-sdk";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handlePayment = async (e: React.FormEvent) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     setPaymentStep("processing");
     setIsProcessing(true);
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2500));
+    // Clean price string, remove anything that isn't a digit or decimal point
+    const cleanedPrice = event.price.replace(/[^\d.]/g, '');
+    let amountNum = parseFloat(cleanedPrice);
 
-    setPaymentStep("success");
-    setIsProcessing(false);
+    // If there is no numeric value found (e.g. "Elite Discount"), let's default to a dummy 100 for Razorpay testing
+    if (isNaN(amountNum) && !event.price.toLowerCase().includes("free")) {
+      amountNum = 100;
+    }
 
-    // Auto-close and signal success after a short delay
-    setTimeout(() => {
-      onSuccess();
-      onClose();
-    }, 2000);
+    if (amountNum === 0 || event.price.toLowerCase().includes("free")) {
+      // Free pass logic
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setPaymentStep("success");
+      setIsProcessing(false);
+      setTimeout(() => {
+        onSuccess();
+        onClose();
+      }, 2000);
+      return;
+    }
+
+    const res = await loadRazorpayScript();
+    if (!res) {
+      alert("Razorpay failed to load. Are you online?");
+      setPaymentStep("form");
+      setIsProcessing(false);
+      return;
+    }
+
+    try {
+      // Step 1: Create an order on our backend
+      const response = await fetch("/api/create-razorpay-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: amountNum, currency: "INR" }),
+      });
+      const data = await response.json();
+
+      if (!data || data.error) {
+        throw new Error(data.error || "Order creation failed");
+      }
+
+      // Step 2: Initialize Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_YourTestKeyId", // Enter the Key ID generated from the Dashboard
+        amount: data.amount,
+        currency: data.currency,
+        name: "EventSphere",
+        description: `Pass for ${event.title}`,
+        image: "https://your-logo-url.png",
+        order_id: data.isDemo ? undefined : data.id, 
+        handler: function (response: any) {
+          // Success handler
+          setPaymentStep("success");
+          setIsProcessing(false);
+          setTimeout(() => {
+            onSuccess();
+            onClose();
+          }, 2000);
+        },
+        prefill: {
+          name: "Aryan Singh",
+          email: "aryan@example.com",
+          contact: "9999999999",
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#b49b5c",
+        },
+        modal: {
+          escape: false,
+          ondismiss: function() {
+            setPaymentStep("form");
+            setIsProcessing(false);
+          }
+        }
+      };
+
+      const rzp1 = new (window as any).Razorpay(options);
+      rzp1.on('payment.failed', function (response: any) {
+        alert(response.error.description);
+        setPaymentStep("form");
+        setIsProcessing(false);
+      });
+      rzp1.open();
+
+    } catch (error) {
+      console.error(error);
+      setPaymentStep("form");
+      setIsProcessing(false);
+      alert("Payment failed");
+    }
   };
 
   return (
