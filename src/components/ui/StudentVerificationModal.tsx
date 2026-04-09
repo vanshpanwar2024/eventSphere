@@ -89,6 +89,8 @@ export default function StudentVerificationModal({
     
     if (enteredOtp === sentOtp || enteredOtp === "123456") { // 123456 for testing override if needed
       setStep("success");
+      // Save verification status to local storage everywhere
+      localStorage.setItem("isStudentVerified", "true");
       setTimeout(() => {
         onSuccess();
         onClose();

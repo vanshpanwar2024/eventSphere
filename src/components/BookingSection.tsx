@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StudentVerificationModal from "@/components/ui/StudentVerificationModal";
 import DigitalPassModal from "@/components/ui/DigitalPassModal";
 import PaymentGatewayModal from "@/components/ui/PaymentGatewayModal";
@@ -17,6 +17,13 @@ export default function BookingSection({ event }: BookingSectionProps) {
   const [isPassOpen, setIsPassOpen] = useState(false);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+  useEffect(() => {
+    const verifiedStatus = localStorage.getItem("isStudentVerified");
+    if (verifiedStatus === "true") {
+      setIsVerified(true);
+    }
+  }, []);
 
   const handlePurchase = () => {
     setIsPaymentModalOpen(true);

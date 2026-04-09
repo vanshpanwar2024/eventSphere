@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StudentVerificationModal from "@/components/ui/StudentVerificationModal";
 import DigitalPassModal from "@/components/ui/DigitalPassModal";
 import PaymentGatewayModal from "@/components/ui/PaymentGatewayModal";
@@ -18,6 +18,14 @@ export default function CollegeBookingSection({ event }: CollegeBookingSectionPr
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
+  useEffect(() => {
+    // Check local storage for existing student validation everywhere
+    const verifiedStatus = localStorage.getItem("isStudentVerified");
+    if (verifiedStatus === "true") {
+      setIsVerified(true);
+    }
+  }, []);
+
   const handleApply = () => {
     if (!isVerified) {
       setIsVerificationModalOpen(true);
@@ -28,9 +36,7 @@ export default function CollegeBookingSection({ event }: CollegeBookingSectionPr
 
   const handleVerificationSuccess = () => {
     setIsVerified(true);
-    // After verification, we could automatically open the payment modal
-    // but giving a small delay or letting them click again is safer for UX.
-    // However, for a "verify & checkout" flow, auto-opening is better.
+    localStorage.setItem("isStudentVerified", "true");
     setTimeout(() => {
       setIsPaymentModalOpen(true);
     }, 500);

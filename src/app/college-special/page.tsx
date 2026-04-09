@@ -18,6 +18,12 @@ export default function CollegeSpecialPage() {
   const [dynamicEvents, setDynamicEvents] = useState<any[]>([]);
 
   useEffect(() => {
+    // Check local storage for verification status
+    const verifiedStatus = localStorage.getItem("isStudentVerified");
+    if (verifiedStatus === "true") {
+      setIsVerified(true);
+    }
+
     fetch("/api/events")
       .then((res) => res.json())
       .then((allEvents: DisplayEvent[]) => {
@@ -66,6 +72,7 @@ export default function CollegeSpecialPage() {
         if (otp === expectedOtp) {
           // Verification success
           setIsVerified(true);
+          localStorage.setItem("isStudentVerified", "true");
           setShowVerificationForm(false);
           setIsOtpSent(false); // reset state for next time if needed
         } else {
