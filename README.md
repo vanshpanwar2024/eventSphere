@@ -1,10 +1,10 @@
-# 🌐 EventSphere
+# EventSphere
 
 > A modern, premium event booking and management platform designed to deliver seamless ticketing, exclusive student access, and secure checkout experiences.
 
 [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://projecteventsphere.vercel.app/)
 
-## ✨ Features
+## Features
 
 - **Exclusive Student Access**: Automated student verification system via institutional emails with OTP validation. Verified users unlock "Elite Discounts" permanently tied to their user sessions via PostgreSQL.
 - **Secure Payment Gateway**: Integrated with **Razorpay** to support card, UPI, and net banking methods. Includes automatic gateway bypass for free-tier passes.
@@ -15,7 +15,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend**
 - Next.js (App Router)
@@ -35,7 +35,7 @@
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 The backend implements a formal **N-Tier Layered Architecture** emphasizing Object-Oriented Principles (OOP):
 - **Models**: `BaseEntity` abstract implementations enclosing domain-specific business rules and validations.
@@ -46,7 +46,7 @@ The backend implements a formal **N-Tier Layered Architecture** emphasizing Obje
 
 ---
 
-## 📊 System Diagrams
+## System Diagrams
 
 ### UML Class Diagram
 The class diagram illustrates the backend architecture following the MVC + Repository pattern with Dependency Injection. It shows the relationships between Controllers, Services, Repositories, Models, and frontend components.
@@ -69,7 +69,7 @@ The ER diagram models the data entities — NextAuthSession, HostedEventRecord, 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Prerequisites
 Ensure you have the following installed:
