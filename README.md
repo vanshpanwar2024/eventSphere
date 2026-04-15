@@ -1,4 +1,4 @@
-# EventSphere
+#                              EventSphere
 
 > A modern, premium event booking and management platform designed to deliver seamless ticketing, exclusive student access, and secure checkout experiences.
 
