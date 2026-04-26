@@ -6,6 +6,13 @@
 import { supabase } from "@/lib/supabase";
 import { DatabaseError } from "../errors/AppError";
 
+function getClient() {
+  if (!supabase) {
+    throw new DatabaseError("Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
+  }
+  return supabase;
+}
+
 export interface IBaseRepository<T> {
   save(entity: T): Promise<any>;
   findAll(tableName: string): Promise<any[]>;
@@ -16,7 +23,7 @@ export interface IBaseRepository<T> {
 export abstract class BaseRepository<T> implements IBaseRepository<T> {
   
   public async saveBase(tableName: string, data: Record<string, any>): Promise<any> {
-    const { data: result, error } = await supabase
+    const { data: result, error } = await getClient()
       .from(tableName)
       .insert([data])
       .select()
@@ -29,7 +36,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
   }
 
   public async findAll(tableName: string): Promise<any[]> {
-    const { data, error } = await supabase
+    const { data, error } = await getClient()
       .from(tableName)
       .select('*')
       .order('id', { ascending: false });
@@ -42,7 +49,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
   }
 
   public async findById(tableName: string, id: number | string): Promise<any | null> {
-    const { data, error } = await supabase
+    const { data, error } = await getClient()
       .from(tableName)
       .select('*')
       .eq('id', id)
@@ -56,7 +63,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
   }
 
   public async update(tableName: string, id: number | string, updates: Record<string, any>): Promise<any> {
-    const { data, error } = await supabase
+    const { data, error } = await getClient()
       .from(tableName)
       .update(updates)
       .eq('id', id)
