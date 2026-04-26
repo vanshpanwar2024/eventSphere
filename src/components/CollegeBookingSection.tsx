@@ -118,7 +118,10 @@ export default function CollegeBookingSection({ event }: CollegeBookingSectionPr
         onSuccess={handlePaymentSuccess}
         event={{
           title: event.title,
-          price: event.price
+          price: event.price,
+          date: event.date,
+          location: event.location,
+          image: event.image
         }}
       />
 

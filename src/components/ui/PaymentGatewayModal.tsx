@@ -10,6 +10,9 @@ interface PaymentGatewayModalProps {
   event: {
     title: string;
     price: string;
+    date?: string;
+    location?: string;
+    image?: string;
   };
 }
 
@@ -59,9 +62,9 @@ export default function PaymentGatewayModal({
           body: JSON.stringify({
             event: {
               title: event.title,
-              date: event.date,
-              location: event.location,
-              image: event.image
+              date: event.date || "",
+              location: event.location || "",
+              image: event.image || ""
             },
             ticket: {
               price: "Free",
@@ -129,9 +132,9 @@ export default function PaymentGatewayModal({
                 razorpay_signature: response.razorpay_signature,
                 event: {
                   title: event.title,
-                  date: event.date,
-                  location: event.location,
-                  image: event.image
+                  date: event.date || "",
+                  location: event.location || "",
+                  image: event.image || ""
                 },
                 ticket: {
                   price: event.price,

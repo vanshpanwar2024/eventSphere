@@ -134,7 +134,10 @@ export default function BookingSection({ event }: BookingSectionProps) {
         onSuccess={handlePaymentSuccess}
         event={{
           title: event.title,
-          price: isVerified ? "Elite Discount" : event.price
+          price: isVerified ? "Elite Discount" : event.price,
+          date: event.date,
+          location: event.location,
+          image: event.image
         }}
       />
     </div>
