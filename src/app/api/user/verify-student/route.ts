@@ -10,6 +10,11 @@ export async function GET(request: Request) {
   }
 
   try {
+    if (!supabase) {
+      // If database is not configured, return a default state
+      return NextResponse.json({ isVerified: false });
+    }
+
     const { data, error } = await supabase
       .from("student_verifications")
       .select("is_verified")
@@ -40,6 +45,13 @@ export async function POST(request: Request) {
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
+
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Database not configured" },
+        { status: 500 }
+      );
     }
 
     const { data, error } = await supabase
