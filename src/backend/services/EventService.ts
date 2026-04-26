@@ -10,8 +10,11 @@ export class EventService {
   }
 
   public async createEvent(data: Record<string, any>): Promise<any> {
+    // Auto-approve events so they appear in the listing immediately
+    const eventData = { ...data, status: 'approved' as const };
+
     // Instantiate domain entity encapsulating validation logic
-    const event = new EventModel(data as any);
+    const event = new EventModel(eventData as any);
 
     // Business rule validation
     const validationErrors = event.validate();
