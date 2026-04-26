@@ -87,16 +87,27 @@ export default function PaymentGatewayModal({
         throw new Error(data.error || "Order creation failed");
       }
 
-      // Step 2: Initialize Razorpay Checkout
+      // If Razorpay keys are not configured (demo mode), simulate successful payment
+      if (data.isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setPaymentStep("success");
+        setIsProcessing(false);
+        setTimeout(() => {
+          onSuccess();
+          onClose();
+        }, 2000);
+        return;
+      }
+
+      // Step 2: Initialize Razorpay Checkout (only with real keys)
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_YourTestKeyId", // Enter the Key ID generated from the Dashboard
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: data.currency,
         name: "EventSphere",
         description: `Pass for ${event.title}`,
-        image: "https://your-logo-url.png",
-        order_id: data.isDemo ? undefined : data.id, 
-        handler: function (response: any) {
+        order_id: data.id, 
+        handler: function () {
           // Success handler
           setPaymentStep("success");
           setIsProcessing(false);
@@ -126,8 +137,8 @@ export default function PaymentGatewayModal({
       };
 
       const rzp1 = new (window as any).Razorpay(options);
-      rzp1.on('payment.failed', function (response: any) {
-        alert(response.error.description);
+      rzp1.on('payment.failed', function (failResponse: any) {
+        alert(failResponse.error.description);
         setPaymentStep("form");
         setIsProcessing(false);
       });
