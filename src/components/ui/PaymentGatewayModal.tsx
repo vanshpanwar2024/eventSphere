@@ -52,7 +52,28 @@ export default function PaymentGatewayModal({
 
     // Free pass — skip Razorpay entirely
     if (amountNum === 0 || event.price.toLowerCase().includes("free")) {
-      await new Promise((r) => setTimeout(r, 1200));
+      try {
+        await fetch("/api/save-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            event: {
+              title: event.title,
+              date: event.date,
+              location: event.location,
+              image: event.image
+            },
+            ticket: {
+              price: "Free",
+              type: "Free Pass"
+            }
+          }),
+        });
+      } catch (e) {
+        console.error("Error saving free order:", e);
+      }
+
+      await new Promise((r) => setTimeout(r, 800));
       setPaymentStep("success");
       setTimeout(() => {
         onSuccess();
@@ -106,6 +127,16 @@ export default function PaymentGatewayModal({
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_signature: response.razorpay_signature,
+                event: {
+                  title: event.title,
+                  date: event.date,
+                  location: event.location,
+                  image: event.image
+                },
+                ticket: {
+                  price: event.price,
+                  type: "Standard Pass"
+                }
               }),
             });
             const verifyData = await verifyRes.json();

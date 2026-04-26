@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { orderStore } from "@/lib/order-store";
 
 export async function POST(req: Request) {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      await req.json();
+    const bodyData = await req.json();
+    const { 
+      razorpay_order_id, 
+      razorpay_payment_id, 
+      razorpay_signature,
+      event,
+      ticket
+    } = bodyData;
 
     // Validate required fields
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -23,10 +30,10 @@ export async function POST(req: Request) {
     }
 
     // Generate expected signature: HMAC-SHA256(order_id + "|" + payment_id, secret)
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const signatureBody = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac("sha256", key_secret)
-      .update(body)
+      .update(signatureBody)
       .digest("hex");
 
     if (expectedSignature !== razorpay_signature) {
@@ -37,6 +44,20 @@ export async function POST(req: Request) {
     }
 
     // Signature is valid — payment is authentic
+    // Save the order to our local store
+    if (event && ticket) {
+      await orderStore.saveOrder({
+        event,
+        ticket: {
+          ...ticket,
+          id: "ES-" + Math.random().toString(36).substring(2, 9).toUpperCase()
+        },
+        razorpay_order_id,
+        razorpay_payment_id,
+        created_at: new Date().toISOString()
+      });
+    }
+
     return NextResponse.json({
       verified: true,
       payment_id: razorpay_payment_id,
