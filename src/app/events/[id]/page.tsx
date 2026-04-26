@@ -1,12 +1,9 @@
 import Navbar from "@/components/Navbar";
 import { eventsData } from "@/lib/data";
 import { mapHostedRecordToDisplayEvent, type DisplayEvent } from "@/lib/hosted-event-display";
-import { EventRepository } from "@/backend/repositories/EventRepository";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BookingSection from "@/components/BookingSection";
-
-const eventRepository = new EventRepository();
 
 export const dynamic = "force-dynamic";
 
@@ -24,24 +21,32 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
   } else if (!Number.isFinite(numericId)) {
     return notFound();
   } else {
-    const hosted = await eventRepository.findById(numericId);
-    if (!hosted) {
+    // Dynamically import repository to avoid Supabase crash at module evaluation
+    try {
+      const { EventRepository } = await import("@/backend/repositories/EventRepository");
+      const eventRepository = new EventRepository();
+      const hosted = await eventRepository.findById(numericId);
+      if (!hosted) {
+        return notFound();
+      }
+      event = mapHostedRecordToDisplayEvent({
+        id: hosted.id,
+        title: hosted.title,
+        description: hosted.description,
+        dateTime: hosted.dateTime,
+        location: hosted.location,
+        category: hosted.category,
+        maxParticipants: hosted.maxParticipants,
+        isPaid: hosted.isPaid,
+        ticketPrice: hosted.ticketPrice,
+        isCollegeSpecial: hosted.isCollegeSpecial,
+        brochureUrl: hosted.brochureUrl,
+        thumbnailUrl: hosted.thumbnailUrl,
+      });
+    } catch (err) {
+      console.warn("Could not fetch hosted event from database:", err);
       return notFound();
     }
-    event = mapHostedRecordToDisplayEvent({
-      id: hosted.id,
-      title: hosted.title,
-      description: hosted.description,
-      dateTime: hosted.dateTime,
-      location: hosted.location,
-      category: hosted.category,
-      maxParticipants: hosted.maxParticipants,
-      isPaid: hosted.isPaid,
-      ticketPrice: hosted.ticketPrice,
-      isCollegeSpecial: hosted.isCollegeSpecial,
-      brochureUrl: hosted.brochureUrl,
-      thumbnailUrl: hosted.thumbnailUrl,
-    });
   }
 
   return (

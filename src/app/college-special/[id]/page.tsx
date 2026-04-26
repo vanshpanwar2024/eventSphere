@@ -3,10 +3,7 @@ import { collegeEventsData } from "@/lib/data";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CollegeBookingSection from "@/components/CollegeBookingSection";
-import { EventRepository } from "@/backend/repositories/EventRepository";
 import { mapHostedRecordToDisplayEvent } from "@/lib/hosted-event-display";
-
-const eventRepository = new EventRepository();
 
 export default async function CollegeEventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -16,15 +13,21 @@ export default async function CollegeEventDetailsPage({ params }: { params: Prom
   
   // 2. If not found, check hosted repository
   if (!event) {
-    const hostedRaw = await eventRepository.findById(Number(resolvedParams.id));
-    if (hostedRaw && hostedRaw.isCollegeSpecial) {
-      const displayEvent = mapHostedRecordToDisplayEvent(hostedRaw);
-      // Map displayEvent fields to event shape (static data has university and type)
-      event = {
-        ...displayEvent,
-        university: displayEvent.location,
-        type: displayEvent.category,
-      } as any;
+    try {
+      const { EventRepository } = await import("@/backend/repositories/EventRepository");
+      const eventRepository = new EventRepository();
+      const hostedRaw = await eventRepository.findById(Number(resolvedParams.id));
+      if (hostedRaw && hostedRaw.isCollegeSpecial) {
+        const displayEvent = mapHostedRecordToDisplayEvent(hostedRaw);
+        // Map displayEvent fields to event shape (static data has university and type)
+        event = {
+          ...displayEvent,
+          university: displayEvent.location,
+          type: displayEvent.category,
+        } as any;
+      }
+    } catch (err) {
+      console.warn("Could not fetch hosted college event from database:", err);
     }
   }
 
