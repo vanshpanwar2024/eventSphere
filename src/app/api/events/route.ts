@@ -3,6 +3,8 @@ import { eventsData } from "@/lib/data";
 import { mapHostedRecordToDisplayEvent } from "@/lib/hosted-event-display";
 import { eventController } from "@/backend/core/container";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   // Try to fetch hosted events from Supabase; gracefully degrade if DB is unavailable
   let hostedDisplay: ReturnType<typeof mapHostedRecordToDisplayEvent>[] = [];
