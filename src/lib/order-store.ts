@@ -1,14 +1,4 @@
-import fs from "fs";
-import path from "path";
-
-const LOCAL_DB_DIR = path.join(process.cwd(), ".local-db");
-const ORDERS_FILE = path.join(LOCAL_DB_DIR, "orders.json");
-
-function ensureLocalDbDir() {
-  if (!fs.existsSync(LOCAL_DB_DIR)) {
-    fs.mkdirSync(LOCAL_DB_DIR, { recursive: true });
-  }
-}
+import { supabase } from "./supabase";
 
 export interface OrderData {
   event: {
@@ -27,33 +17,55 @@ export interface OrderData {
   created_at: string;
 }
 
+const BUCKET_NAME = "local-db";
+const FILE_NAME = "orders.json";
+
 export const orderStore = {
   saveOrder: async (order: OrderData) => {
-    ensureLocalDbDir();
-    let orders: OrderData[] = [];
-    if (fs.existsSync(ORDERS_FILE)) {
-      try {
-        const data = fs.readFileSync(ORDERS_FILE, "utf-8");
-        orders = JSON.parse(data);
-      } catch (e) {
-        console.error("Error reading orders file:", e);
-        orders = [];
+    try {
+      if (!supabase) throw new Error("Supabase internal error");
+
+      let orders: OrderData[] = [];
+      const { data, error } = await supabase.storage.from(BUCKET_NAME).download(FILE_NAME);
+      
+      if (data && !error) {
+        const text = await data.text();
+        if (text) {
+          orders = JSON.parse(text);
+        }
       }
+
+      orders.push(order);
+
+      const { error: uploadError } = await supabase.storage.from(BUCKET_NAME).upload(FILE_NAME, JSON.stringify(orders, null, 2), {
+        contentType: 'application/json',
+        upsert: true
+      });
+
+      if (uploadError) {
+        console.error("Supabase Storage Error: ", uploadError);
+      }
+      return order;
+    } catch (e) {
+      console.error("Error saving order remotely:", e);
+      return order;
     }
-    orders.push(order);
-    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), "utf-8");
-    return order;
   },
 
   getOrders: async (): Promise<OrderData[]> => {
-    if (!fs.existsSync(ORDERS_FILE)) {
-      return [];
-    }
     try {
-      const data = fs.readFileSync(ORDERS_FILE, "utf-8");
-      return JSON.parse(data);
+      if (!supabase) return [];
+
+      const { data, error } = await supabase.storage.from(BUCKET_NAME).download(FILE_NAME);
+      
+      if (error || !data) {
+        return [];
+      }
+      
+      const text = await data.text();
+      return text ? JSON.parse(text) : [];
     } catch (e) {
-      console.error("Error reading orders file:", e);
+      console.error("Error reading orders remotely:", e);
       return [];
     }
   }
