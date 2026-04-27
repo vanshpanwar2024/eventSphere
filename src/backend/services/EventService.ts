@@ -10,8 +10,8 @@ export class EventService {
   }
 
   public async createEvent(data: Record<string, any>): Promise<any> {
-    // Auto-approve events so they appear in the listing immediately
-    const eventData = { ...data, status: 'approved' as const };
+    // Events default to pending and wait for admin approval
+    const eventData = { ...data, status: 'pending' as const };
 
     // Instantiate domain entity encapsulating validation logic
     const event = new EventModel(eventData as any);
