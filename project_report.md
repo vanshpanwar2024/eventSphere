@@ -1,236 +1,234 @@
+# **EVENTSPHERE PROJECT REPORT**
 
-# EventSphere Project Report
 
-## 1. Problem Statement
 
-EventSphere is a web application designed to provide the following functionalities:
+**EventSphere: A Smart Event Management and Booking Platform**
 
-* Listing and browsing events through a user interface that fetches data from an API
-* Displaying detailed pages for both static events and user hosted events
-* Allowing users to create and host events through a submission form
-* Providing an admin moderation system to approve or decline hosted events
-* Supporting authentication using NextAuth with Google and credentials
-* Enabling student verification using OTP with persistence
-* Integrating a payment interface using Razorpay
-* Generating QR based digital passes after successful payment
+Submitted by:
 
----
+* Prateek Shakya (2401020048)
+* Drishti Jha (2401010162)
+* Aryan (2401010101)
+* Nishtha Gupta (2401010303)
+* Vansh Panwar (2401010494)
 
-## 2. Solution Approach
+Under the guidance of:
+SDSE Team
 
-### Event Discovery
+Submitted in partial fulfillment of the requirements for the degree of
+[B.Tech/CSE]
 
-The frontend fetches events using the endpoint:
-
-GET /api/events
-
-The backend combines:
-
-* Hosted events stored in the database
-* Static events stored locally
-
-Hosted events are transformed into a display format before being returned to the frontend.
+Rishihood University/Newton school of technology
+2nd
 
 ---
 
-### Event Details
+## **Declaration**
 
-The system retrieves event details by:
-
-* Checking static event data
-* Querying hosted events using the repository layer
-
-The event details page also includes a booking component for user interaction.
+We hereby declare that the project titled **“EventSphere: A Smart Event Management and Booking Platform”** is our original work and has been carried out under proper supervision. This work has not been submitted elsewhere for any degree or academic requirement.
 
 ---
 
-### Event Hosting
+## **Acknowledgement**
 
-Users submit event details through a form which triggers:
-
-POST /api/events/create
-
-The backend processes the request through multiple layers:
-
-Controller to Service to Model validation to Repository to Database (Supabase)
+We would like to express our sincere gratitude to our project guide for their continuous support and guidance throughout the development of this project. We also thank our institution for providing the necessary resources and environment to successfully complete this work.
 
 ---
 
-### Admin Moderation
+## **Abstract**
 
-Admin functionality includes:
+EventSphere is a web-based platform designed to simplify event discovery, hosting, and participation. The system enables users to browse events, host their own events, and securely book tickets through an integrated payment gateway.
 
-GET /api/admin/events
-PATCH /api/admin/events/:id/status
-
-Admins can review and update the status of hosted events through the interface.
+The platform incorporates features such as OTP-based student verification, admin moderation, and QR-based digital passes to ensure secure and efficient event management. Built using a layered architecture with modern web technologies, the system ensures scalability, modularity, and maintainability.
 
 ---
 
-### Student Verification
+## **Table of Contents**
 
-Student verification is handled using OTP:
-
-POST /api/send-otp
-
-Verification data is stored and retrieved using:
-
-/api/user/verify-student
-
-This enables conditional access to certain features such as booking.
-
----
-
-### Payments and Digital Pass
-
-Payment processing is integrated using Razorpay:
-
-POST /api/create-razorpay-order
-
-After successful payment, a digital pass is generated containing a QR code for event access.
+1. Introduction
+2. Objectives
+3. Problem Statement
+4. Methodology
+5. System Architecture
+6. System Implementation
+7. OOP Concepts
+8. Design Patterns
+9. SOLID Principles
+10. Database Design
+11. Testing
+12. Results and Analysis
+13. Conclusion
+14. Future Scope
 
 ---
 
-## 3. System Architecture
+## **1. Introduction**
 
-### Architecture Style
+In today’s digital environment, event management systems are often fragmented and inefficient. Many platforms lack proper verification mechanisms, secure booking systems, and structured workflows for event hosting.
 
-The application is built using Next.js App Router for both frontend and backend APIs. The backend follows a layered architecture:
-
-Controller to Service to Repository to Database
+EventSphere addresses these challenges by providing a unified platform where users can discover events, host events, verify identity, and book tickets securely.
 
 ---
 
-### Layer Responsibilities
+## **2. Objectives**
 
-Controller handles HTTP requests and responses
-Service contains business logic
-Repository manages database interactions
-Model defines data structure and validation
-
----
-
-### Dependency Injection
-
-Dependencies are managed using a container-based approach for structured instantiation and usage across layers.
+* To develop a centralized platform for event discovery
+* To enable users to host and manage events
+* To implement secure authentication and student verification
+* To integrate a payment gateway for ticket booking
+* To generate QR-based digital passes
+* To provide admin moderation for event approval
 
 ---
 
-### Example Flow
+## **3. Problem Statement**
 
-Event creation follows this sequence:
+Existing event platforms lack reliability, security, and proper validation mechanisms. Fake listings, unverified users, and inefficient booking systems reduce user trust.
 
-Frontend Form Submission to API Route to Controller to Service to Model Validation to Repository to Supabase Database
+The objective is to design a scalable system that ensures:
 
----
-
-### Performance Considerations
-
-The application uses dynamic data fetching strategies and ensures real-time updates for event listings and details.
-
----
-
-## 4. Object Oriented Programming Concepts
-
-Encapsulation is implemented through private fields in the EventModel class with public getter methods.
-
-Abstraction is achieved using abstract classes such as BaseEntity and BaseRepository.
-
-Inheritance is used where EventModel extends BaseEntity and EventRepository extends BaseRepository.
-
-Polymorphism is demonstrated through implementation of abstract methods such as validate and toJSON in EventModel.
+* Secure event hosting
+* Verified user participation
+* Efficient booking and payment processing
+* Administrative control over event approval
 
 ---
 
-## 5. Design Patterns
+## **4. Methodology**
 
-Repository Pattern is used to abstract database operations from business logic.
+The project follows a layered architecture approach consisting of:
 
-Dependency Injection is implemented to manage dependencies across different layers.
+* Controller Layer
+* Service Layer
+* Repository Layer
+* Database Layer
 
-The structure also reflects separation of concerns across controllers, services, and data layers.
+Development was carried out in phases:
 
----
-
-## 6. SOLID Principles
-
-Single Responsibility Principle is followed by separating concerns across controllers, services, and repositories.
-
-Open Closed Principle is supported through reusable base classes and extensible architecture.
-
-Liskov Substitution Principle is maintained through proper inheritance hierarchies.
-
-Interface Segregation Principle is supported through use of specific interfaces for repositories.
-
-Dependency Inversion Principle is followed by depending on abstractions rather than concrete implementations.
+1. Requirement Analysis
+2. System Design
+3. Implementation
+4. Testing
+5. Deployment
 
 ---
 
-## 7. UML Diagrams
+## **5. System Architecture**
 
-### Class Structure
+The system is built using a modular architecture where each layer has a specific responsibility:
 
-BaseEntity is an abstract class extended by EventModel.
-BaseRepository is extended by EventRepository.
-EventService depends on the repository interface.
-EventController depends on the service layer.
+* Controller handles request and response
+* Service contains business logic
+* Repository manages database operations
+* Database stores application data
 
----
-
-### Use Cases
-
-Visitor can browse and view events.
-Authenticated user can log in, host events, verify student status, and make payments.
-Admin can approve or decline hosted events.
+This separation ensures scalability and maintainability.
 
 ---
 
-### Sequence Flow
+## **6. System Implementation**
 
-Event creation follows:
+### **6.1 Event Discovery**
 
-User submits form to API to Controller to Service to Model Validation to Repository to Database
+Users can browse events through an API-based system that combines static and hosted events.
 
----
+### **6.2 Event Details**
 
-### Entity Relationship
+Detailed pages are generated dynamically using both static data and database queries.
 
-The system uses two main tables:
+### **6.3 Event Hosting**
 
-events table containing event details
-student_verifications table containing verification data
+Users can create events through a submission form, processed via backend APIs.
 
----
+### **6.4 Admin Moderation**
 
-## 8. Database Design
+Admins can approve or reject events using dedicated endpoints.
 
-The application uses Supabase as the database.
+### **6.5 Student Verification**
 
-Tables used:
+OTP-based verification ensures only valid users can access certain features.
 
-events
-student_verifications
+### **6.6 Payment and Digital Pass**
 
-The database supports event storage and user verification functionality.
+Payment integration is implemented, and QR-based digital passes are generated after successful transactions.
 
 ---
 
-## 9. Test Cases
+## **7. Object-Oriented Programming Concepts**
 
-API validation ensures correct handling of event data inputs.
-
-Event listing ensures availability of both static and hosted events.
-
-Admin functionality supports status updates for hosted events.
-
-Student verification ensures correct persistence and retrieval of verification data.
-
-Order related functionality provides structured data responses for user interaction.
+* **Encapsulation:** Data is protected using private fields
+* **Abstraction:** Base classes define common structure
+* **Inheritance:** Models extend base classes
+* **Polymorphism:** Methods are overridden for flexibility
 
 ---
 
-## 10. Conclusion
+## **8. Design Patterns**
 
-EventSphere is a structured web application built using a layered architecture approach. It effectively integrates frontend and backend components while applying object oriented programming principles and design patterns.
+* Repository Pattern for database abstraction
+* Dependency Injection for better modularity
+* Separation of Concerns across layers
 
-The system provides a complete workflow for event discovery, hosting, moderation, verification, payment, and access through digital passes, demonstrating a well organized and scalable application design.
+---
+
+## **9. SOLID Principles**
+
+* Single Responsibility Principle
+* Open Closed Principle
+* Liskov Substitution Principle
+* Interface Segregation Principle
+* Dependency Inversion Principle
+
+---
+
+## **10. Database Design**
+
+The system uses a structured database with the following tables:
+
+* Events Table
+* Student Verification Table
+
+The database ensures efficient storage and retrieval of event and user data.
+
+---
+
+## **11. Testing**
+
+* API testing for validation
+* Event listing verification
+* Admin functionality testing
+* Verification system testing
+* Payment workflow testing
+
+---
+
+## **12. Results and Analysis**
+
+The system successfully provides:
+
+* Real-time event listing
+* Secure event booking
+* OTP-based verification
+* QR-based ticket generation
+
+### Key Performance Indicators:
+
+* Reduction in fake event listings
+* Improved booking efficiency
+* Faster event access using QR passes
+
+---
+
+## **13. Conclusion**
+
+EventSphere provides a complete and scalable solution for event management by integrating discovery, hosting, verification, and booking into a single platform. The system demonstrates strong implementation of software engineering principles and real-world applicability.
+
+---
+
+## **14. Future Scope**
+
+* AI-based event recommendation system
+* Mobile application development
+* Advanced analytics dashboard
+* Multi-language support
+
