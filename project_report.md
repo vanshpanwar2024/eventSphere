@@ -18,8 +18,8 @@ SDSE Team
 Submitted in partial fulfillment of the requirements for the degree of
 [B.Tech/CSE]
 
-Rishihood University/Newton school of technology
-2nd
+Rishihood University/Newton school of technology 
+- 2nd Year
 
 ---
 
